@@ -21,8 +21,10 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     private bool queuedNextAttack;
     private bool canQueueNextAttack;
     private bool isPerformingCombatMovement;
+    private bool hasBufferedAttackDirection;
     private Coroutine lungeRoutine;
     private Vector2 currentAttackDirection = Vector2.right;
+    private Vector2 bufferedAttackDirection = Vector2.right;
 
     [SerializeField] private AbilityController abilities;
     [SerializeField] private PlayerStats stats;
@@ -97,7 +99,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         if (attack == null) return;
 
         StopLunge();
-        currentAttackDirection = ReadFacingDirection();
+        currentAttackDirection = ConsumeAttackDirection();
         if (rb != null)
             rb.linearVelocity = Vector2.zero;
 
@@ -111,8 +113,14 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         if (abilities != null)
             abilities.TriggerAttackStarted(context);
 
-        if (animator != null && !string.IsNullOrEmpty(attack.animatorTrigger))
-            animator.SetTrigger(attack.animatorTrigger);
+        if (animator != null)
+        {
+            animator.SetFloat(XInputHash, currentAttackDirection.x);
+            animator.SetFloat(YInputHash, currentAttackDirection.y);
+
+            if (!string.IsNullOrEmpty(attack.animatorTrigger))
+                animator.SetTrigger(attack.animatorTrigger);
+        }
 
         if (attack.swingSfx != null)
             AudioSource.PlayClipAtPoint(attack.swingSfx, transform.position);
@@ -122,6 +130,14 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     public void AE_OpenComboWindow() => canQueueNextAttack = true;
 
     public void AE_CloseComboWindow() => canQueueNextAttack = false;
+
+    public void BufferAttackDirection(Vector2 direction)
+    {
+        if (direction.sqrMagnitude <= Mathf.Epsilon) return;
+
+        bufferedAttackDirection = direction.normalized;
+        hasBufferedAttackDirection = true;
+    }
 
     public void AE_LungeForward()
     {
@@ -167,6 +183,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         else
         {
             isAttacking = false;
+            hasBufferedAttackDirection = false;
             currentAttack = null;
             currentComboStep = 0;
         }
@@ -213,6 +230,15 @@ public class PlayerCombat : MonoBehaviour, IDamageable
             return currentAttackDirection;
 
         return ReadFacingDirection();
+    }
+
+    private Vector2 ConsumeAttackDirection()
+    {
+        if (!hasBufferedAttackDirection)
+            return ReadFacingDirection();
+
+        hasBufferedAttackDirection = false;
+        return bufferedAttackDirection;
     }
 
     private Vector2 ReadFacingDirection()

@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour {
     private Vector2 _bufferedMovement;
     private Vector2 _previousRawInput;
     private Vector2 _previousFacing;
+    private Vector2 _pendingFacingAfterAttack;
+    private bool _hasPendingFacingAfterAttack;
 
     private void Awake() {
         _rb = GetComponent<Rigidbody2D>();
@@ -39,16 +41,24 @@ public class PlayerMovement : MonoBehaviour {
         if (xActive && yActive) {
             if (xActive && !prevXActive) facing = new Vector2(direction.x, 0f);
             else if (yActive && !prevYActive) facing = new Vector2(0f, direction.y);
-            else facing = _previousFacing; 
+            else facing = _previousFacing;
         }
 
         _previousRawInput = direction;
 
-        if (direction.Equals(Vector2.zero)) return;
+        if (direction.Equals(Vector2.zero)) {
+            _hasPendingFacingAfterAttack = false;
+            return;
+        }
 
-        _animator.SetFloat("xInput", facing.x);
-        _animator.SetFloat("yInput", facing.y);
-        _previousFacing = facing;
+        if (_combat != null && _combat.IsAttacking) {
+            _combat.BufferAttackDirection(facing);
+            _pendingFacingAfterAttack = facing;
+            _hasPendingFacingAfterAttack = true;
+            return;
+        }
+
+        ApplyFacing(facing);
     }
 
     void FixedUpdate() {
@@ -57,6 +67,11 @@ public class PlayerMovement : MonoBehaviour {
 
     private void LateUpdate()
     {
+        if (_hasPendingFacingAfterAttack && (_combat == null || !_combat.IsAttacking)) {
+            ApplyFacing(_pendingFacingAfterAttack);
+            _hasPendingFacingAfterAttack = false;
+        }
+
         _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
     }
 
@@ -84,5 +99,14 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         _rb.AddForce(_bufferedMovement);
+    }
+
+    private void ApplyFacing(Vector2 facing)
+    {
+        if (_animator == null) return;
+
+        _animator.SetFloat("xInput", facing.x);
+        _animator.SetFloat("yInput", facing.y);
+        _previousFacing = facing;
     }
 }
