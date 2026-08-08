@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour {
     [Range(0, 1)]
     [SerializeField] private float _drag;
     [SerializeField] private Animator _animator;
+    [SerializeField] private PlayerCombat _combat;
 
     private Rigidbody2D _rb;
     private Vector2 _bufferedMovement;
@@ -17,7 +18,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Awake() {
         _rb = GetComponent<Rigidbody2D>();
-        _animator = GetComponentInChildren<Animator>();
+        if (_animator == null) _animator = GetComponentInChildren<Animator>();
+        if (_combat == null) _combat = GetComponent<PlayerCombat>();
     }
 
     private void Start() {
@@ -60,6 +62,13 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Move()
     {
+        if (_combat != null && _combat.IsAttacking) {
+            if (!_combat.IsPerformingCombatMovement)
+                _rb.linearVelocity = Vector2.zero;
+
+            return;
+        }
+
         if (Mathf.Approximately(_bufferedMovement.magnitude, 0f)) {
 
             _rb.linearVelocity *= 1 - _drag;
