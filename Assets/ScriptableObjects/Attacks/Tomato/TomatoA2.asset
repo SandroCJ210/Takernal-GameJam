@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e63b8baf3ca67ad4b9f2ccffa0e9601a, type: 3}
-  m_Name: Attack 2
+  m_Name: TomatoA2
   m_EditorClassIdentifier: Assembly-CSharp::AttackDataSO
-  attackName: Combo 2
+  attackId: Tomato_Uppercut
   animatorTrigger: Combo 2
+  tags: 
   baseDamage: 20
   knockbackForce: 5
   hitboxActiveTime: 0.15
+  hitboxShapes: []
   nextAttackInCombo: {fileID: 11400000, guid: 1c7742bf65987f5468f3419d97499ea1, type: 2}
   hitVfxPrefab: {fileID: 0}
   swingSfx: {fileID: 0}
