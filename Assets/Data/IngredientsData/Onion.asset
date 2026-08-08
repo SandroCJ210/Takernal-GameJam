@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac6239fee991d84b97cbcaf7c6c394b, type: 3}
+  m_Name: Onion
+  m_EditorClassIdentifier: Assembly-CSharp::IngredientData
+  id: onion
+  displayName: Red Onion
+  icon: {fileID: -5570227908463447612, guid: b2fc29439932d4a47b0b0dda8a3da06e, type: 3}
+  visualSidekick: {fileID: 0}
+  flavorText: Sharp, pungent layers that make enemies weep.
+  abilityDescription: Passive: Tear Gas (Area Stun)
+  rarity: 1
+  statBonus:
+    speedIncrease: 1
+    damageIncrease: 3
+    healthIncrease: 5

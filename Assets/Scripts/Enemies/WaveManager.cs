@@ -39,14 +39,20 @@ public class WaveManager : MonoBehaviour
     public bool isWaveActive = false;
     public bool isLevelComplete = false;
 
+    public Vector3 lastEnemyDeathPosition { get; private set; } = Vector3.zero;
+
+    private bool isSpawningEnemies = false;
+
     private void OnEnable()
     {
         ChaserEnemy.OnEnemyDied += HandleEnemyDied;
+        GameEvents.OnIngredientSelected += HandleIngredientSelected;
     }
 
     private void OnDisable()
     {
         ChaserEnemy.OnEnemyDied -= HandleEnemyDied;
+        GameEvents.OnIngredientSelected -= HandleIngredientSelected;
     }
 
     private void Start()
@@ -72,14 +78,20 @@ public class WaveManager : MonoBehaviour
         int totalEnemies = CalculateEnemyCountForWave(currentWaveNumber);
         
         int spawnedCount = 0;
+        isSpawningEnemies = true;
         while (spawnedCount < totalEnemies)
         {
             if (isLevelComplete) break;
             
             SpawnEnemy();
             spawnedCount++;
-            yield return new WaitForSeconds(spawnInterval);
+            if (spawnedCount < totalEnemies)
+            {
+                yield return new WaitForSeconds(spawnInterval);
+            }
         }
+        isSpawningEnemies = false;
+        CheckWaveCompletion();
     }
 
     private int CalculateEnemyCountForWave(int waveNum)
@@ -183,8 +195,17 @@ public class WaveManager : MonoBehaviour
     private void HandleEnemyDied(ChaserEnemy enemy)
     {
         activeEnemiesCount--;
+        if (enemy != null)
+        {
+            lastEnemyDeathPosition = enemy.transform.position;
+        }
 
-        if (activeEnemiesCount <= 0 && isWaveActive && !isLevelComplete)
+        CheckWaveCompletion();
+    }
+
+    private void CheckWaveCompletion()
+    {
+        if (activeEnemiesCount <= 0 && !isSpawningEnemies && isWaveActive && !isLevelComplete)
         {
             isWaveActive = false;
             Debug.Log($"[WaveManager] ¡Oleada {currentWaveNumber} Completada!");
@@ -192,6 +213,15 @@ public class WaveManager : MonoBehaviour
             GameEvents.OnWaveCompleted?.Invoke();
 
             currentWaveNumber++;
+            // La siguiente oleada se iniciará cuando el jugador seleccione un ingrediente en la UI
+        }
+    }
+
+
+    private void HandleIngredientSelected(IngredientData selectedIngredient)
+    {
+        if (!isLevelComplete)
+        {
             Invoke(nameof(TriggerNextWave), timeBetweenWaves);
         }
     }
@@ -203,6 +233,7 @@ public class WaveManager : MonoBehaviour
             StartCoroutine(StartNextWaveRoutine());
         }
     }
+
 
     public void SetLevelComplete()
     {

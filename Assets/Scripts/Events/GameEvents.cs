@@ -14,4 +14,9 @@ public static class GameEvents
 
     // Ocurre cuando se procesa la entrega con éxito y se aplica un buff
     public static Action<StatBonus> OnRewardApplied;
+
+    // Señales de apertura y cierre de la UI de selección de ingredientes
+    public static Action OnIngredientSelectionOpened;
+    public static Action OnIngredientSelectionClosed;
 }
+

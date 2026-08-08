@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac6239fee991d84b97cbcaf7c6c394b, type: 3}
+  m_Name: Cheese
+  m_EditorClassIdentifier: Assembly-CSharp::IngredientData
+  id: cheese
+  displayName: Cheese
+  icon: {fileID: -347414827906679412, guid: b2fc29439932d4a47b0b0dda8a3da06e, type: 3}
+  visualSidekick: {fileID: 0}
+  flavorText: Rich, creamy, and packed with calcium power.
+  abilityDescription: Passive: Sticky Coating (Slowing)
+  rarity: 0
+  statBonus:
+    speedIncrease: 0
+    damageIncrease: 1
+    healthIncrease: 15
