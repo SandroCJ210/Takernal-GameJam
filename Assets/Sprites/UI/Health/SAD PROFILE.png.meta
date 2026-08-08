@@ -1,0 +1,637 @@
+fileFormatVersion: 2
+guid: 5e11b56dcd542c543b5fcc11b5ac1c76
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6578033369473385372
+    second: SAD PROFILE_0
+  - first:
+      213: 2473301323481297244
+    second: SAD PROFILE_1
+  - first:
+      213: -1917339155723733092
+    second: SAD PROFILE_2
+  - first:
+      213: -3281425602425952519
+    second: SAD PROFILE_3
+  - first:
+      213: -7558678356591016392
+    second: SAD PROFILE_4
+  - first:
+      213: 6833372538793938538
+    second: SAD PROFILE_5
+  - first:
+      213: -4308784967499416309
+    second: SAD PROFILE_6
+  - first:
+      213: 7640829782745471677
+    second: SAD PROFILE_7
+  - first:
+      213: -3288354962013370102
+    second: SAD PROFILE_8
+  - first:
+      213: 6874473036826807598
+    second: SAD PROFILE_9
+  - first:
+      213: 5190616997877472821
+    second: SAD PROFILE_10
+  - first:
+      213: 2464013586782176222
+    second: SAD PROFILE_11
+  - first:
+      213: 3617538112420678841
+    second: SAD PROFILE_12
+  - first:
+      213: -1348343602882915145
+    second: SAD PROFILE_13
+  - first:
+      213: -3272140501863312273
+    second: SAD PROFILE_14
+  - first:
+      213: -4649258653807355468
+    second: SAD PROFILE_15
+  - first:
+      213: 888378104194608143
+    second: SAD PROFILE_16
+  - first:
+      213: 8670563048922656907
+    second: SAD PROFILE_17
+  - first:
+      213: -7582418304377397063
+    second: SAD PROFILE_18
+  - first:
+      213: -6656782926603350720
+    second: SAD PROFILE_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SAD PROFILE_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9380246f7ed94b50800000000000000
+      internalID: 6578033369473385372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_1
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c513b98137ee25220800000000000000
+      internalID: 2473301323481297244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_2
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c97b325423e3465e0800000000000000
+      internalID: -1917339155723733092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_3
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f66782ecc80672d0800000000000000
+      internalID: -3281425602425952519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_4
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83685ff051e2a1790800000000000000
+      internalID: -7558678356591016392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_5
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6ec8b88e1405de50800000000000000
+      internalID: 6833372538793938538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_6
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0d77a6a6ee1434c0800000000000000
+      internalID: -4308784967499416309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_7
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbad4cd543ea90a60800000000000000
+      internalID: 7640829782745471677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_8
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a09ccc1a59a6d52d0800000000000000
+      internalID: -3288354962013370102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_9
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2d0012fdc8076f50800000000000000
+      internalID: 6874473036826807598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_10
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53e579398a6c80840800000000000000
+      internalID: 5190616997877472821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_11
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed343e16d4fe13220800000000000000
+      internalID: 2464013586782176222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_12
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bc85482fb3143230800000000000000
+      internalID: 3617538112420678841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_13
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b45ef213a8b94de0800000000000000
+      internalID: -1348343602882915145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_14
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f64d443dc850792d0800000000000000
+      internalID: -3272140501863312273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_15
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b9d6ee13e38a7fb0800000000000000
+      internalID: -4649258653807355468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_16
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0c21cecd27245c00800000000000000
+      internalID: 888378104194608143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_17
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b80b9a58727045870800000000000000
+      internalID: 8670563048922656907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_18
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b06a2db9b6d5c690800000000000000
+      internalID: -7582418304377397063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SAD PROFILE_19
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04d0ce8823b5e93a0800000000000000
+      internalID: -6656782926603350720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SAD PROFILE_0: 6578033369473385372
+      SAD PROFILE_1: 2473301323481297244
+      SAD PROFILE_10: 5190616997877472821
+      SAD PROFILE_11: 2464013586782176222
+      SAD PROFILE_12: 3617538112420678841
+      SAD PROFILE_13: -1348343602882915145
+      SAD PROFILE_14: -3272140501863312273
+      SAD PROFILE_15: -4649258653807355468
+      SAD PROFILE_16: 888378104194608143
+      SAD PROFILE_17: 8670563048922656907
+      SAD PROFILE_18: -7582418304377397063
+      SAD PROFILE_19: -6656782926603350720
+      SAD PROFILE_2: -1917339155723733092
+      SAD PROFILE_3: -3281425602425952519
+      SAD PROFILE_4: -7558678356591016392
+      SAD PROFILE_5: 6833372538793938538
+      SAD PROFILE_6: -4308784967499416309
+      SAD PROFILE_7: 7640829782745471677
+      SAD PROFILE_8: -3288354962013370102
+      SAD PROFILE_9: 6874473036826807598
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

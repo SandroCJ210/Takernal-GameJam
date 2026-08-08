@@ -1,0 +1,637 @@
+fileFormatVersion: 2
+guid: c399ef9475b5ecb4d93c7e26ba8f2ff0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7741600857085846516
+    second: MID PROFILE_0
+  - first:
+      213: 4996233351205496807
+    second: MID PROFILE_1
+  - first:
+      213: -3474194814252892619
+    second: MID PROFILE_2
+  - first:
+      213: -6482719034258791014
+    second: MID PROFILE_3
+  - first:
+      213: 5533071341453673571
+    second: MID PROFILE_4
+  - first:
+      213: 8378936227003582060
+    second: MID PROFILE_5
+  - first:
+      213: -4154390165794228120
+    second: MID PROFILE_6
+  - first:
+      213: -1038805361719830105
+    second: MID PROFILE_7
+  - first:
+      213: 1559483211287406222
+    second: MID PROFILE_8
+  - first:
+      213: 218119742461098817
+    second: MID PROFILE_9
+  - first:
+      213: -1624147486543423635
+    second: MID PROFILE_10
+  - first:
+      213: -2262724077713860055
+    second: MID PROFILE_11
+  - first:
+      213: -1455915602296248041
+    second: MID PROFILE_12
+  - first:
+      213: -4412849060479490603
+    second: MID PROFILE_13
+  - first:
+      213: 315320503099859548
+    second: MID PROFILE_14
+  - first:
+      213: -1184872153481391610
+    second: MID PROFILE_15
+  - first:
+      213: 2282020375117935849
+    second: MID PROFILE_16
+  - first:
+      213: 4455275871492415392
+    second: MID PROFILE_17
+  - first:
+      213: -413658795811222699
+    second: MID PROFILE_18
+  - first:
+      213: 7915005101509287778
+    second: MID PROFILE_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: MID PROFILE_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f3267776f0bf6b60800000000000000
+      internalID: 7741600857085846516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_1
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e7209103cf265540800000000000000
+      internalID: 4996233351205496807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_2
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53eb3f7393e29cfc0800000000000000
+      internalID: -3474194814252892619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_3
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a956750a261c806a0800000000000000
+      internalID: -6482719034258791014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_4
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3648d30d11b69cc40800000000000000
+      internalID: 5533071341453673571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_5
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c66433eda16f74470800000000000000
+      internalID: 8378936227003582060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_6
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8687575b724a856c0800000000000000
+      internalID: -4154390165794228120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_7
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a91beff60c6591f0800000000000000
+      internalID: -1038805361719830105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_8
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e86a8f9d7b564a510800000000000000
+      internalID: 1559483211287406222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_9
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14bb4e700cae60300800000000000000
+      internalID: 218119742461098817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_10
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d675cb1577ed579e0800000000000000
+      internalID: -1624147486543423635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_11
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92a542390703990e0800000000000000
+      internalID: -2262724077713860055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_12
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 719ee26397c8bcbe0800000000000000
+      internalID: -1455915602296248041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_13
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d524b6e82962c2c0800000000000000
+      internalID: -4412849060479490603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_14
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 3
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c522aa1b35e306400800000000000000
+      internalID: 315320503099859548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_15
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6025d7bdd0d7e8fe0800000000000000
+      internalID: -1184872153481391610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_16
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e4bb15c07d5baf10800000000000000
+      internalID: 2282020375117935849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_17
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0af9ca0dcc154dd30800000000000000
+      internalID: 4455275871492415392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_18
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55bc4715483624af0800000000000000
+      internalID: -413658795811222699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MID PROFILE_19
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 2
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26f9dde443fb7dd60800000000000000
+      internalID: 7915005101509287778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MID PROFILE_0: 7741600857085846516
+      MID PROFILE_1: 4996233351205496807
+      MID PROFILE_10: -1624147486543423635
+      MID PROFILE_11: -2262724077713860055
+      MID PROFILE_12: -1455915602296248041
+      MID PROFILE_13: -4412849060479490603
+      MID PROFILE_14: 315320503099859548
+      MID PROFILE_15: -1184872153481391610
+      MID PROFILE_16: 2282020375117935849
+      MID PROFILE_17: 4455275871492415392
+      MID PROFILE_18: -413658795811222699
+      MID PROFILE_19: 7915005101509287778
+      MID PROFILE_2: -3474194814252892619
+      MID PROFILE_3: -6482719034258791014
+      MID PROFILE_4: 5533071341453673571
+      MID PROFILE_5: 8378936227003582060
+      MID PROFILE_6: -4154390165794228120
+      MID PROFILE_7: -1038805361719830105
+      MID PROFILE_8: 1559483211287406222
+      MID PROFILE_9: 218119742461098817
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
