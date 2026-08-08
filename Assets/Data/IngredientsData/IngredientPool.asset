@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d86f1f54826e047957028557ef9f5b, type: 3}
+  m_Name: IngredientPool
+  m_EditorClassIdentifier: Assembly-CSharp::IngredientPoolSO
+  allIngredients:
+  - {fileID: 11400000, guid: 6ce7d48989a686d41b21522ff330a425, type: 2}
+  - {fileID: 11400000, guid: 5609388c6b904de44adef43b23aa0046, type: 2}
+  - {fileID: 11400000, guid: a12e345678901234567890abcdef0123, type: 2}
+  - {fileID: 11400000, guid: b23f45678901234567890abcdef01234, type: 2}
+  - {fileID: 11400000, guid: c34a5678901234567890abcdef012345, type: 2}
+  - {fileID: 11400000, guid: d45b678901234567890abcdef0123456, type: 2}
