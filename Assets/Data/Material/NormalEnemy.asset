@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: NormalEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: ChaserNormalEnemy
-  maxHealth: 10
+  maxHealth: 100
   moveSpeed: 2
   damage: 10
-  sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: -347414827906679412, guid: b2fc29439932d4a47b0b0dda8a3da06e, type: 3}
   debugColor: {r: 0.6415094, g: 0.3897246, b: 0.105909556, a: 1}
