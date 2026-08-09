@@ -42,5 +42,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Map
+    uniqueID: 2117680697
+    locked: 0
+  - name: Decorations
+    uniqueID: 474163395
+    locked: 0
+  - name: Walls
+    uniqueID: 1642265615
+    locked: 0
+  - name: Player
+    uniqueID: 923979591
+    locked: 0
   m_RenderingLayers:
   - Default
