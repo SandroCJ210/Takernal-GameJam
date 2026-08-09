@@ -24,5 +24,10 @@ public static class GameEvents
     public static Action<CustomerInstance, int, bool> OnCustomerRemoved; // (instancia, slotIndex, fueAtendido)
     public static Action<int, float, float> OnCustomerPatienceUpdated; // (slotIndex, currentPatience, maxPatience)
     public static Action<CustomerInstance, int> OnCustomerExpired;
+
+    // Eventos del Sistema de Entrega
+    public static Action OnDeliveryPanelOpened;
+    public static Action OnDeliveryPanelClosed;
+    public static Action<DeliveryResult> OnDeliveryCompleted;
 }
 

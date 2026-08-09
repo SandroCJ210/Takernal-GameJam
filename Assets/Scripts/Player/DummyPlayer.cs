@@ -1,9 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class DummyPlayer : MonoBehaviour
 {
+    [Header("Inventario de Platillos (Mock)")]
+    [Tooltip("Platillos que porta el jugador para entregar. En el juego final provendrá de playerDish.currentRecipe")]
+    public List<DishData> availableDishes = new List<DishData>();
+
+    [Header("Pruebas: Generación Automática de Platillos")]
+    [Tooltip("Activa la generación de platillos aleatorios cada N segundos para pruebas.")]
+    public bool autoGenerateTestDishes = true;
+    public float dishGenerationInterval = 8f;
+    public List<DishData> testDishPool = new List<DishData>();
+    private float testDishTimer = 0f;
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
 
@@ -11,14 +23,15 @@ public class DummyPlayer : MonoBehaviour
     public float maxHealth = 100f;
     public float currentHealth;
 
-    [Header("Combat & Stat Multipliers")]
-    public float damageMultiplier = 1f;
-
     [Header("Attack Settings")]
     public float attackRange = 2f;
-    public float baseDamage = 15f;
+    public float attackDamage = 15f;
     public float attackCooldown = 0.5f;
     private float nextAttackTime = 0f;
+
+    [Header("Depuración UI")]
+    [Tooltip("Muestra una etiqueta con las estadísticas en pantalla para pruebas.")]
+    public bool showDebugLabel = true;
 
     private Rigidbody2D rb;
     private Vector2 movementInput;
@@ -33,6 +46,28 @@ public class DummyPlayer : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+
+        // Cargar pool de prueba si está vacío
+        if (testDishPool == null || testDishPool.Count == 0)
+        {
+            testDishPool = new List<DishData>();
+#if UNITY_EDITOR
+            string[] dishGuids = UnityEditor.AssetDatabase.FindAssets("t:DishData");
+            foreach (string g in dishGuids)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(g);
+                DishData d = UnityEditor.AssetDatabase.LoadAssetAtPath<DishData>(path);
+                if (d != null && !testDishPool.Contains(d))
+                {
+                    testDishPool.Add(d);
+                }
+            }
+            Debug.Log($"[DummyPlayer] Pool de prueba cargado con {testDishPool.Count} platillos desde Assets.");
+#else
+            DishData[] loadedDishes = Resources.LoadAll<DishData>("");
+            if (loadedDishes != null) testDishPool.AddRange(loadedDishes);
+#endif
+        }
     }
 
     private void OnEnable()
@@ -91,6 +126,54 @@ public class DummyPlayer : MonoBehaviour
             Attack();
             nextAttackTime = Time.time + attackCooldown;
         }
+
+        // Generación periódica de platillos aleatorios para pruebas
+        TickTestDishGeneration();
+    }
+
+    private void TickTestDishGeneration()
+    {
+        if (!autoGenerateTestDishes) return;
+
+        testDishTimer += Time.deltaTime;
+        if (testDishTimer >= dishGenerationInterval)
+        {
+            testDishTimer = 0f;
+            AddRandomTestDish();
+        }
+    }
+
+    public void AddRandomTestDish()
+    {
+        if (testDishPool == null || testDishPool.Count == 0)
+        {
+            testDishPool = new List<DishData>();
+#if UNITY_EDITOR
+            string[] dishGuids = UnityEditor.AssetDatabase.FindAssets("t:DishData");
+            foreach (string g in dishGuids)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(g);
+                DishData d = UnityEditor.AssetDatabase.LoadAssetAtPath<DishData>(path);
+                if (d != null && !testDishPool.Contains(d))
+                {
+                    testDishPool.Add(d);
+                }
+            }
+#else
+            DishData[] loadedDishes = Resources.LoadAll<DishData>("");
+            if (loadedDishes != null) testDishPool.AddRange(loadedDishes);
+#endif
+        }
+
+        if (testDishPool == null || testDishPool.Count == 0) return;
+
+        DishData randomDish = testDishPool[Random.Range(0, testDishPool.Count)];
+        if (randomDish != null)
+        {
+            if (availableDishes == null) availableDishes = new List<DishData>();
+            availableDishes.Add(randomDish);
+            Debug.Log($"<color=cyan>[DummyPlayer] 🍲 ¡Nuevo platillo recibido para probar: '{randomDish.displayName}'! (Total platillos: {availableDishes.Count})</color>");
+        }
     }
 
     private void FixedUpdate()
@@ -111,8 +194,7 @@ public class DummyPlayer : MonoBehaviour
             ChaserEnemy enemy = hitCollider.GetComponent<ChaserEnemy>();
             if (enemy != null)
             {
-                float calculatedDamage = baseDamage * damageMultiplier;
-                enemy.TakeDamage(calculatedDamage);
+                enemy.TakeDamage(attackDamage);
             }
         }
     }
@@ -141,13 +223,64 @@ public class DummyPlayer : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public bool RemoveDish(DishData dish)
+    {
+        return availableDishes != null && availableDishes.Remove(dish);
+    }
+
+    public bool HasDishes()
+    {
+        return availableDishes != null && availableDishes.Count > 0;
+    }
+
     public void ApplyUpgrade(StatBonus bonus)
     {
+        // Modificadores planos
         moveSpeed += bonus.speedIncrease;
-        damageMultiplier += bonus.damageIncrease;
+        attackDamage += bonus.damageIncrease;
         maxHealth += bonus.healthIncrease;
-        currentHealth = Mathf.Min(currentHealth + bonus.healthIncrease, maxHealth);
 
-        Debug.Log($"[DummyPlayer] Stats Actualizados -> Velocidad: {moveSpeed}, Daño: x{damageMultiplier}, Vida Max: {maxHealth}");
+        // Modificadores porcentuales (%)
+        if (bonus.speedPercent != 0f) moveSpeed += moveSpeed * bonus.speedPercent;
+        if (bonus.damagePercent != 0f) attackDamage += attackDamage * bonus.damagePercent;
+        if (bonus.healthPercent != 0f) maxHealth += maxHealth * bonus.healthPercent;
+
+        // Protecciones y límites mínimos seguros
+        moveSpeed = Mathf.Max(1f, moveSpeed);
+        attackDamage = Mathf.Max(1f, attackDamage);
+        maxHealth = Mathf.Max(10f, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + (bonus.healthIncrease > 0f ? bonus.healthIncrease : 0f), 1f, maxHealth);
+
+        Debug.Log($"[DummyPlayer] Stats Actualizados -> Velocidad: {moveSpeed:F2}, Daño: {attackDamage:F1}, Vida Max: {maxHealth:F1}, Vida Actual: {currentHealth:F1}");
+    }
+
+    private void OnGUI()
+    {
+        if (!showDebugLabel) return;
+
+        Camera mainCam = Camera.main;
+        Vector3 screenPos = mainCam != null ? mainCam.WorldToScreenPoint(transform.position + Vector3.up * 1.3f) : Vector3.zero;
+
+        GUIStyle boxStyle = new GUIStyle(GUI.skin.box);
+        boxStyle.fontSize = 12;
+        boxStyle.alignment = TextAnchor.MiddleCenter;
+        boxStyle.normal.textColor = Color.yellow;
+        boxStyle.fontStyle = FontStyle.Bold;
+
+        string labelText = $"❤️ Vida: {currentHealth:F0}/{maxHealth:F0}\n⚔️ Daño: {attackDamage:F1}\n⚡ Vel: {moveSpeed:F2}";
+
+        float width = 180f;
+        float height = 55f;
+
+        if (screenPos != Vector3.zero && screenPos.z > 0)
+        {
+            Rect rect = new Rect(screenPos.x - width / 2f, Screen.height - screenPos.y - height / 2f, width, height);
+            GUI.Box(rect, labelText, boxStyle);
+        }
+        else
+        {
+            Rect rect = new Rect(10, 10, width, height);
+            GUI.Box(rect, labelText, boxStyle);
+        }
     }
 }

@@ -20,4 +20,17 @@ MonoBehaviour:
   dislikedTags:
   - dulce
   maxPatience: 20
-  reward: {fileID: 0}
+  possibleRewards:
+  - reward: {fileID: 11400000, guid: 91889c9adc94de4428dc7ee5d141aadf, type: 2}
+    weight: 50
+  - reward: {fileID: 11400000, guid: 89b9eb655377542499b72a869fd9a9bf, type: 2}
+    weight: 40
+  - reward: {fileID: 11400000, guid: 9ee77d866133d924ba7fec808b43a2a4, type: 2}
+    weight: 10
+  possiblePunishments:
+  - punishment: {fileID: 11400000, guid: 3a2ea8b734bdc1041a9b35e966e4345b, type: 2}
+    weight: 40
+  - punishment: {fileID: 11400000, guid: 73ccc7bf909e8404bb8ca18e80ddee80, type: 2}
+    weight: 50
+  - punishment: {fileID: 11400000, guid: 58ddddb319fe63c438af08c6977bbdc9, type: 2}
+    weight: 10

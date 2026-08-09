@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129393da9d6955d4ca01eec001460e67, type: 3}
+  m_Name: Ensalada
+  m_EditorClassIdentifier: Assembly-CSharp::DishData
+  id: 2
+  displayName: Ensalada Fina
+  icon: {fileID: -1981281045, guid: 15462ce871915114e8f6923f9ac8d597, type: 3}
+  requiredIngredients:
+  - {fileID: 11400000, guid: c34a5678901234567890abcdef012345, type: 2}
+  - {fileID: 11400000, guid: a12e345678901234567890abcdef0123, type: 2}
+  tags:
+  - saludable
+  - elegante

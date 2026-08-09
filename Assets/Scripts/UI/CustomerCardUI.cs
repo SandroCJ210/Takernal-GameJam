@@ -152,7 +152,8 @@ public class CustomerCardUI : MonoBehaviour
         if (activeContainer != null) activeContainer.SetActive(false);
         if (emptyContainer != null) emptyContainer.SetActive(true);
 
-        if (activeContainer == null && emptyContainer == null)
+        // Si no se usa un contenedor de vacío estático, ocultar la tarjeta para que no quede un rectángulo oscuro
+        if (emptyContainer == null)
         {
             gameObject.SetActive(false);
         }

@@ -212,12 +212,22 @@ public class CustomerManager : MonoBehaviour
 
     /// <summary>
     /// Maneja el momento exacto en que la paciencia de un cliente llega a cero.
+    /// Sortea un castigo de sus possiblePunishments y lo aplica al jugador.
     /// </summary>
     private void HandleCustomerExpired(CustomerInstance customer)
     {
-        if (showDebugLogs)
+        PunishmentData chosenPunishment = RewardResolver.PickPunishment(customer.Data.possiblePunishments);
+        if (chosenPunishment != null)
         {
-            Debug.LogWarning($"<color=red>[CustomerManager] ¡Paciencia agotada! El cliente '{customer.Data.customerName}' en slot [{customer.SlotIndex}] se fue descontento.</color>");
+            GameEvents.OnRewardApplied?.Invoke(chosenPunishment.penalty);
+            if (showDebugLogs)
+            {
+                Debug.LogWarning($"<color=red>[CustomerManager] ¡Paciencia agotada! El cliente '{customer.Data.customerName}' en slot [{customer.SlotIndex}] se fue descontento. Castigo aplicado: '{chosenPunishment.punishmentName}'.</color>");
+            }
+        }
+        else if (showDebugLogs)
+        {
+            Debug.LogWarning($"<color=red>[CustomerManager] ¡Paciencia agotada! El cliente '{customer.Data.customerName}' en slot [{customer.SlotIndex}] se fue descontento (sin castigos configurados).</color>");
         }
 
         GameEvents.OnCustomerExpired?.Invoke(customer, customer.SlotIndex);
