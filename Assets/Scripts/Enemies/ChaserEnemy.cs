@@ -1,26 +1,78 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class ChaserEnemy : MonoBehaviour
+public class ChaserEnemy : MonoBehaviour, IDamageable
 {
+    private const float DefaultHealth = 30f;
+
     [Header("Data Configuration")]
     public EnemyData data;
 
     [Header("Runtime Stats (Debug)")]
-    [SerializeField] private float currentHealth;
+    [SerializeField] private float currentHealth = DefaultHealth;
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float damage = 10f;
 
     [Header("Attack Settings")]
-    public float attackCooldown = 1f;
+    [SerializeField] private float attackRange = 0.9f;
+    [SerializeField] private float attackRadius = 0.75f;
+    [SerializeField] private float attackWindup = 0.2f;
+    [SerializeField] private float attackRecovery = 0.35f;
+    [SerializeField] private float attackCooldown = 1f;
+    [SerializeField] private LayerMask attackLayers = ~0;
+
+    [Header("Hit Reaction")]
+    [SerializeField] private float hitStunDuration = 0.25f;
+
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private string xDirectionParameter = "xInput";
+    [SerializeField] private string yDirectionParameter = "yInput";
+    [SerializeField] private string speedParameter = "speed";
+    [SerializeField] private string attackingParameter = "isAttacking";
+    [SerializeField] private string stunnedParameter = "isStunned";
+
+    [Header("Animation State (Debug)")]
+    [SerializeField] private Vector2 facingDirection = Vector2.down;
+    [SerializeField] private Vector2 movementDirection;
+    [SerializeField] private int facingX;
+    [SerializeField] private int facingY = -1;
+    [SerializeField] private bool isAttacking;
+    [SerializeField] private bool isStunned;
+
     private float nextAttackTime = 0f;
 
     public static event Action<ChaserEnemy> OnEnemyDied;
+    public bool IsAlive => !hasDied && currentHealth > 0f;
+    public bool IsAttacking => isAttacking;
+    public bool IsStunned => isStunned;
+    public Vector2 FacingDirection => facingDirection;
+    public Vector2 MovementDirection => movementDirection;
+    public int FacingX => facingX;
+    public int FacingY => facingY;
 
     private Transform targetPlayer;
+    private IDamageable targetDamageable;
+    private PlayerCombat targetCombat;
+    private DummyPlayer targetDummyPlayer;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
+    private bool statsInitialized;
+    private bool hasDied;
+    private Coroutine attackRoutine;
+    private Coroutine hitStunRoutine;
+    private int xDirectionHash;
+    private int yDirectionHash;
+    private int speedHash;
+    private int attackingHash;
+    private int stunnedHash;
+    private bool hasXDirectionParameter;
+    private bool hasYDirectionParameter;
+    private bool hasSpeedParameter;
+    private bool hasAttackingParameter;
+    private bool hasStunnedParameter;
 
     private void Awake()
     {
@@ -28,107 +80,380 @@ public class ChaserEnemy : MonoBehaviour
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        xDirectionHash = Animator.StringToHash(xDirectionParameter);
+        yDirectionHash = Animator.StringToHash(yDirectionParameter);
+        speedHash = Animator.StringToHash(speedParameter);
+        attackingHash = Animator.StringToHash(attackingParameter);
+        stunnedHash = Animator.StringToHash(stunnedParameter);
+
+        CacheAnimatorParameters();
     }
 
     private void Start()
     {
-        InitializeFromData();
+        ApplyVisualsFromData();
+
+        if (!statsInitialized)
+            InitializeStatsFromData();
+
         FindTargetPlayer();
     }
 
     public void InitializeFromData()
+    {
+        InitializeStatsFromData();
+        ApplyVisualsFromData();
+    }
+
+    public void InitializeWithScaledStats(float health, float speed, float dmg)
+    {
+        currentHealth = Mathf.Max(1f, health);
+        moveSpeed = Mathf.Max(0f, speed);
+        damage = Mathf.Max(0f, dmg);
+        statsInitialized = true;
+    }
+
+    private void InitializeStatsFromData()
     {
         if (data != null)
         {
             currentHealth = data.maxHealth;
             moveSpeed = data.moveSpeed;
             damage = data.damage;
-
-            if (spriteRenderer != null)
-            {
-                if (data.sprite != null)
-                {
-                    spriteRenderer.sprite = data.sprite;
-                }
-                spriteRenderer.color = data.debugColor;
-            }
         }
+        else if (currentHealth <= 0f)
+        {
+            currentHealth = DefaultHealth;
+        }
+
+        statsInitialized = true;
     }
 
-    public void InitializeWithScaledStats(float health, float speed, float dmg)
+    private void ApplyVisualsFromData()
     {
-        currentHealth = health;
-        moveSpeed = speed;
-        damage = dmg;
+        if (data == null || spriteRenderer == null) return;
+
+        if (data.sprite != null)
+            spriteRenderer.sprite = data.sprite;
+
+        spriteRenderer.color = data.debugColor;
     }
 
     private void FindTargetPlayer()
     {
-        // Search for DummyPlayer first, or fallback to object with tag "Player"
-        DummyPlayer playerScript = FindFirstObjectByType<DummyPlayer>();
-        if (playerScript != null)
+        targetPlayer = null;
+        targetDamageable = null;
+        targetCombat = FindFirstObjectByType<PlayerCombat>();
+        targetDummyPlayer = null;
+
+        if (targetCombat != null && targetCombat.IsAlive)
         {
-            targetPlayer = playerScript.transform;
+            targetPlayer = targetCombat.transform;
+            targetDamageable = targetCombat;
+            return;
         }
-        else
+
+        targetDummyPlayer = FindFirstObjectByType<DummyPlayer>();
+        if (targetDummyPlayer != null)
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null)
-            {
-                targetPlayer = playerObj.transform;
-            }
+            targetPlayer = targetDummyPlayer.transform;
+            return;
         }
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj == null) return;
+
+        targetPlayer = playerObj.transform;
+        targetCombat = playerObj.GetComponentInParent<PlayerCombat>();
+
+        if (targetCombat != null)
+        {
+            targetDamageable = targetCombat;
+            return;
+        }
+
+        targetDamageable = playerObj.GetComponentInParent<IDamageable>();
     }
 
     private void FixedUpdate()
     {
-        if (targetPlayer == null)
+        if (!IsAlive) return;
+
+        if (isStunned)
         {
-            FindTargetPlayer();
+            movementDirection = Vector2.zero;
+            UpdateAnimator(0f);
             return;
         }
 
-        Vector2 direction = (targetPlayer.position - transform.position).normalized;
-        rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
+        if (targetPlayer == null || !IsTargetAlive())
+        {
+            FindTargetPlayer();
+            if (targetPlayer == null) return;
+        }
+
+        Vector2 toTarget = targetPlayer.position - transform.position;
+        float distanceToTarget = toTarget.magnitude;
+        Vector2 direction = distanceToTarget > Mathf.Epsilon ? toTarget / distanceToTarget : facingDirection;
+
+        SetFacingFromDirection(direction);
+
+        if (isAttacking)
+        {
+            StopMovement();
+            UpdateAnimator(0f);
+            return;
+        }
+
+        if (distanceToTarget <= attackRange)
+        {
+            StopMovement();
+            UpdateAnimator(0f);
+
+            if (Time.time >= nextAttackTime)
+                attackRoutine = StartCoroutine(AttackRoutine());
+
+            return;
+        }
+
+        movementDirection = direction;
+        rb.MovePosition(rb.position + movementDirection * moveSpeed * Time.fixedDeltaTime);
+        UpdateAnimator(moveSpeed);
     }
 
     public void TakeDamage(float amount)
     {
-        currentHealth -= amount;
-        Debug.Log($"[ChaserEnemy] Recibió {amount} de daño. Vida restante: {currentHealth}");
+        if (!IsAlive || amount <= 0f) return;
 
-        if (currentHealth <= 0)
+        currentHealth = Mathf.Max(0f, currentHealth - amount);
+        Debug.Log($"[ChaserEnemy] Recibio {amount} de dano. Vida restante: {currentHealth}");
+
+        if (currentHealth <= 0f)
         {
             Die();
+            return;
         }
+
+        StartHitStun();
     }
 
     private void Die()
     {
+        if (hasDied) return;
+
+        hasDied = true;
         Debug.Log($"[ChaserEnemy] {gameObject.name} ha sido derrotado.");
         OnEnemyDied?.Invoke(this);
         Destroy(gameObject);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private IEnumerator AttackRoutine()
     {
-        TryDamagePlayer(collision.gameObject);
+        isAttacking = true;
+        nextAttackTime = Time.time + attackCooldown;
+        StopMovement();
+        UpdateAnimator(0f);
+
+        yield return new WaitForSeconds(attackWindup);
+
+        PerformAttackHit();
+
+        yield return new WaitForSeconds(attackRecovery);
+
+        isAttacking = false;
+        attackRoutine = null;
+        UpdateAnimator(0f);
     }
 
-    private void OnTriggerStay2D(Collider2D collider)
+    private void StartHitStun()
     {
-        TryDamagePlayer(collider.gameObject);
+        if (hitStunDuration <= 0f) return;
+
+        CancelAttack();
+        nextAttackTime = Mathf.Max(nextAttackTime, Time.time + hitStunDuration);
+
+        if (hitStunRoutine != null)
+            StopCoroutine(hitStunRoutine);
+
+        hitStunRoutine = StartCoroutine(HitStunRoutine());
     }
 
-    private void TryDamagePlayer(GameObject targetObj)
+    private IEnumerator HitStunRoutine()
     {
-        if (Time.time < nextAttackTime) return;
+        isStunned = true;
+        movementDirection = Vector2.zero;
+        UpdateAnimator(0f);
 
-        DummyPlayer dummyPlayer = targetObj.GetComponent<DummyPlayer>();
-        if (dummyPlayer != null)
+        yield return new WaitForSeconds(hitStunDuration);
+
+        isStunned = false;
+        hitStunRoutine = null;
+
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+
+        UpdateAnimator(0f);
+    }
+
+    private void CancelAttack()
+    {
+        if (attackRoutine != null)
         {
-            dummyPlayer.TakeDamage(damage);
-            nextAttackTime = Time.time + attackCooldown;
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
         }
+
+        isAttacking = false;
+    }
+
+    private void PerformAttackHit()
+    {
+        if (!IsAlive || targetPlayer == null || !IsTargetAlive()) return;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attackRadius, attackLayers);
+
+        foreach (Collider2D hit in hits)
+        {
+            if (hit == null || !IsCurrentTarget(hit.gameObject))
+                continue;
+
+            if (targetCombat != null && targetCombat.IsAlive)
+            {
+                targetCombat.TakeDamage(damage, gameObject);
+                return;
+            }
+
+            if (targetDamageable != null && targetDamageable.IsAlive)
+            {
+                targetDamageable.TakeDamage(damage);
+                return;
+            }
+
+            if (targetDummyPlayer != null)
+            {
+                targetDummyPlayer.TakeDamage(damage);
+                return;
+            }
+        }
+    }
+
+    private void SetFacingFromDirection(Vector2 direction)
+    {
+        if (direction.sqrMagnitude <= Mathf.Epsilon) return;
+
+        if (Mathf.Abs(direction.x) >= Mathf.Abs(direction.y))
+        {
+            facingDirection = direction.x < 0f ? Vector2.left : Vector2.right;
+        }
+        else
+        {
+            facingDirection = direction.y < 0f ? Vector2.down : Vector2.up;
+        }
+
+        facingX = Mathf.RoundToInt(facingDirection.x);
+        facingY = Mathf.RoundToInt(facingDirection.y);
+    }
+
+    private void StopMovement()
+    {
+        movementDirection = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
+    }
+
+    private void UpdateAnimator(float currentSpeed)
+    {
+        if (animator == null) return;
+
+        if (hasXDirectionParameter)
+            animator.SetFloat(xDirectionHash, facingX);
+
+        if (hasYDirectionParameter)
+            animator.SetFloat(yDirectionHash, facingY);
+
+        if (hasSpeedParameter)
+            animator.SetFloat(speedHash, currentSpeed);
+
+        if (hasAttackingParameter)
+            animator.SetBool(attackingHash, isAttacking);
+
+        if (hasStunnedParameter)
+            animator.SetBool(stunnedHash, isStunned);
+    }
+
+    private void CacheAnimatorParameters()
+    {
+        if (animator == null || animator.runtimeAnimatorController == null) return;
+
+        foreach (AnimatorControllerParameter parameter in animator.parameters)
+        {
+            if (parameter.nameHash == xDirectionHash && parameter.type == AnimatorControllerParameterType.Float)
+                hasXDirectionParameter = true;
+
+            if (parameter.nameHash == yDirectionHash && parameter.type == AnimatorControllerParameterType.Float)
+                hasYDirectionParameter = true;
+
+            if (parameter.nameHash == speedHash && parameter.type == AnimatorControllerParameterType.Float)
+                hasSpeedParameter = true;
+
+            if (parameter.nameHash == attackingHash && parameter.type == AnimatorControllerParameterType.Bool)
+                hasAttackingParameter = true;
+
+            if (parameter.nameHash == stunnedHash && parameter.type == AnimatorControllerParameterType.Bool)
+                hasStunnedParameter = true;
+        }
+    }
+
+    private bool IsCurrentTarget(GameObject targetObj)
+    {
+        if (targetPlayer == null)
+            FindTargetPlayer();
+
+        if (targetPlayer == null || targetObj == null) return false;
+
+        Transform targetTransform = targetObj.transform;
+        return targetTransform == targetPlayer
+            || targetTransform.IsChildOf(targetPlayer)
+            || targetPlayer.IsChildOf(targetTransform);
+    }
+
+    private bool IsTargetAlive()
+    {
+        if (targetCombat != null)
+            return targetCombat.IsAlive;
+
+        if (targetDamageable != null)
+            return targetDamageable.IsAlive;
+
+        return targetDummyPlayer != null;
+    }
+
+    private void OnDisable()
+    {
+        CancelAttack();
+
+        if (hitStunRoutine != null)
+        {
+            StopCoroutine(hitStunRoutine);
+            hitStunRoutine = null;
+        }
+
+        isStunned = false;
+        isAttacking = false;
+
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
     }
 }

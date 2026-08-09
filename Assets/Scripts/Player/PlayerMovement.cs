@@ -101,6 +101,13 @@ public class PlayerMovement : MonoBehaviour {
         _rb.AddForce(_bufferedMovement);
     }
 
+    public void SetMovementTuning(float acceleration, float maxSpeed, float drag)
+    {
+        _acceleration = Mathf.Max(0f, acceleration);
+        _maxSpeed = Mathf.Max(0f, maxSpeed);
+        _drag = Mathf.Clamp01(drag);
+    }
+
     private void ApplyFacing(Vector2 facing)
     {
         if (_animator == null) return;

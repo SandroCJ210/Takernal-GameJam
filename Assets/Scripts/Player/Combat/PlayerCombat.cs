@@ -195,6 +195,39 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         if (abilities != null)
             abilities.ActivateAbility(slotIndex);
     }
+
+    public void SetFirstAttack(AttackDataSO attack)
+    {
+        firstAttack = attack;
+    }
+
+    public void SetCombatReferences(Animator newAnimator, Hitbox newHitbox)
+    {
+        if (newAnimator != null)
+            animator = newAnimator;
+
+        if (newHitbox == null || newHitbox == hitbox) return;
+
+        if (hitbox != null)
+            hitbox.OnHitLanded -= HandleHitLanded;
+
+        hitbox = newHitbox;
+        hitbox.OnHitLanded += HandleHitLanded;
+    }
+
+    public void CancelCurrentAttack()
+    {
+        StopLunge();
+        queuedNextAttack = false;
+        canQueueNextAttack = false;
+        isAttacking = false;
+        hasBufferedAttackDirection = false;
+        currentAttack = null;
+        currentComboStep = 0;
+
+        if (hitbox != null)
+            hitbox.Deactivate();
+    }
     
 
     public void TakeDamage(float damage) => TakeDamage(damage, null);

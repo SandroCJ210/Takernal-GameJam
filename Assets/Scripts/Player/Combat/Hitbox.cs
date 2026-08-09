@@ -106,7 +106,7 @@ public class Hitbox : MonoBehaviour
         Deactivate();
     }
 
-    private void Deactivate()
+    public void Deactivate()
     {
         for (int i = 0; i < configuredColliders.Count; i++)
             configuredColliders[i].enabled = false;

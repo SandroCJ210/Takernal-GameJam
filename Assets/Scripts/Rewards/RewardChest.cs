@@ -4,34 +4,56 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class RewardChest : MonoBehaviour
 {
-    [Header("Configuración de Ingredientes")]
+    [Header("Configuracion de Ingredientes")]
     [SerializeField] private IngredientPoolSO ingredientPool;
     [SerializeField] private int optionsCount = 3;
 
-    private bool opened = false;
+    [Header("Interaccion")]
+    [SerializeField] private bool startInteractable = true;
+    [SerializeField] private bool destroyAfterOpen = true;
+
+    private Collider2D interactionCollider;
+    private bool isInteractable;
+    private bool opened;
 
     private void Awake()
     {
-        GetComponent<Collider2D>().isTrigger = true;
+        interactionCollider = GetComponent<Collider2D>();
+        interactionCollider.isTrigger = true;
+        SetInteractable(startInteractable);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (opened) return;
+        if (!isInteractable || opened) return;
+        if (!IsPlayer(other)) return;
 
-        // Detecta al jugador ya sea por Tag "Player" o por tener DummyPlayer
-        if (other.CompareTag("Player") || other.GetComponent<DummyPlayer>() != null)
-        {
-            opened = true;
-            OpenChest();
-        }
+        opened = true;
+        OpenChest();
+    }
+
+    public void SetInteractable(bool value)
+    {
+        isInteractable = value;
+
+        if (value)
+            opened = false;
+
+        if (interactionCollider != null)
+            interactionCollider.enabled = value;
+    }
+
+    public void SetDestroyAfterOpen(bool value)
+    {
+        destroyAfterOpen = value;
     }
 
     private void OpenChest()
     {
         if (ingredientPool == null)
         {
-            Debug.LogError("[RewardChest] ¡Falta asignar el IngredientPoolSO en el inspector del cofre!");
+            Debug.LogError("[RewardChest] Falta asignar el IngredientPoolSO en el inspector del cofre.");
+            opened = false;
             return;
         }
 
@@ -39,20 +61,27 @@ public class RewardChest : MonoBehaviour
 
         IngredientSelectionUI uiInstance = IngredientSelectionUI.Instance;
         if (uiInstance == null)
-        {
             uiInstance = FindFirstObjectByType<IngredientSelectionUI>(FindObjectsInactive.Include);
+
+        if (uiInstance == null)
+        {
+            Debug.LogError("[RewardChest] No se encontro ningun IngredientSelectionUI en la escena.");
+            opened = false;
+            return;
         }
 
-        if (uiInstance != null)
-        {
-            uiInstance.ShowSelection(randomIngredients);
-        }
-        else
-        {
-            Debug.LogError("[RewardChest] No se encontró ningún IngredientSelectionUI en la escena.");
-        }
+        uiInstance.ShowSelection(randomIngredients);
+        SetInteractable(false);
 
-        Destroy(gameObject, 0.05f);
+        if (destroyAfterOpen)
+            Destroy(gameObject, 0.05f);
     }
 
+    private bool IsPlayer(Collider2D other)
+    {
+        if (other.CompareTag("Player")) return true;
+        if (other.GetComponentInParent<PlayerIngredientInventory>() != null) return true;
+        if (other.GetComponentInParent<PlayerCombat>() != null) return true;
+        return other.GetComponentInParent<DummyPlayer>() != null;
+    }
 }

@@ -7,9 +7,23 @@ public class IngredientSelectionUI : StaticInstance<IngredientSelectionUI>
     [SerializeField] private GameObject selectionPanel;
     [SerializeField] private IngredientCardUI[] cards;
 
+    [Header("Layout Responsive")]
+    [SerializeField] private bool useResponsiveLayout = true;
+    [SerializeField] private Vector2 screenPadding = new Vector2(32f, 48f);
+    [SerializeField] private float cardSpacing = 24f;
+    [SerializeField] private float minCardWidth = 150f;
+    [SerializeField] private float maxCardWidth = 260f;
+    [SerializeField] private float minCardHeight = 220f;
+    [SerializeField] private float maxCardHeight = 380f;
+    [SerializeField] private float cardAspectRatio = 0.68f;
+
+    private RectTransform selectionPanelRect;
+
     protected override void Awake()
     {
         base.Awake();
+        CacheLayoutReferences();
+
         if (selectionPanel != null)
         {
             selectionPanel.SetActive(false);
@@ -52,6 +66,8 @@ public class IngredientSelectionUI : StaticInstance<IngredientSelectionUI>
                 cards[i].Setup(ingredients[i], this);
             }
         }
+
+        ApplyResponsiveLayout(maxCards);
 
         // Desactivar tarjetas excedentes si hay menos ingredientes que slots
         if (cards != null)
@@ -96,5 +112,92 @@ public class IngredientSelectionUI : StaticInstance<IngredientSelectionUI>
 
         Time.timeScale = 1f;
         GameEvents.OnIngredientSelectionClosed?.Invoke();
+    }
+
+    private void CacheLayoutReferences()
+    {
+        if (selectionPanel != null)
+            selectionPanelRect = selectionPanel.GetComponent<RectTransform>();
+
+        if (selectionPanelRect == null)
+            selectionPanelRect = GetComponent<RectTransform>();
+    }
+
+    private void ApplyResponsiveLayout(int visibleCards)
+    {
+        if (!useResponsiveLayout || cards == null || visibleCards <= 0) return;
+
+        CacheLayoutReferences();
+
+        RectTransform cardsParent = GetCardsParent(visibleCards);
+        RectTransform layoutArea = selectionPanelRect != null ? selectionPanelRect : cardsParent;
+        if (layoutArea == null) return;
+
+        if (selectionPanelRect != null)
+        {
+            selectionPanelRect.anchorMin = Vector2.zero;
+            selectionPanelRect.anchorMax = Vector2.one;
+            selectionPanelRect.offsetMin = Vector2.zero;
+            selectionPanelRect.offsetMax = Vector2.zero;
+        }
+
+        Canvas.ForceUpdateCanvases();
+
+        Rect areaRect = layoutArea.rect;
+        float areaWidth = areaRect.width > 0f ? areaRect.width : Screen.width;
+        float areaHeight = areaRect.height > 0f ? areaRect.height : Screen.height;
+
+        float availableWidth = Mathf.Max(1f, areaWidth - screenPadding.x * 2f);
+        float availableHeight = Mathf.Max(1f, areaHeight - screenPadding.y * 2f);
+        float safeSpacing = Mathf.Max(0f, cardSpacing);
+        float widthFromAvailableSpace = (availableWidth - safeSpacing * (visibleCards - 1)) / visibleCards;
+        float cardWidth = Mathf.Clamp(widthFromAvailableSpace, minCardWidth, maxCardWidth);
+        float cardHeight = Mathf.Clamp(cardWidth / Mathf.Max(0.01f, cardAspectRatio), minCardHeight, Mathf.Min(maxCardHeight, availableHeight));
+
+        float totalWidth = cardWidth * visibleCards + safeSpacing * (visibleCards - 1);
+        if (totalWidth > availableWidth)
+        {
+            cardWidth = Mathf.Max(1f, (availableWidth - safeSpacing * (visibleCards - 1)) / visibleCards);
+            cardHeight = Mathf.Min(availableHeight, cardWidth / Mathf.Max(0.01f, cardAspectRatio));
+            totalWidth = cardWidth * visibleCards + safeSpacing * (visibleCards - 1);
+        }
+
+        if (cardsParent != null)
+        {
+            cardsParent.anchorMin = new Vector2(0.5f, 0.5f);
+            cardsParent.anchorMax = new Vector2(0.5f, 0.5f);
+            cardsParent.pivot = new Vector2(0.5f, 0.5f);
+            cardsParent.anchoredPosition = Vector2.zero;
+            cardsParent.sizeDelta = new Vector2(totalWidth, cardHeight);
+        }
+
+        float startX = -totalWidth * 0.5f + cardWidth * 0.5f;
+        for (int i = 0; i < visibleCards; i++)
+        {
+            if (cards[i] == null) continue;
+
+            RectTransform cardRect = cards[i].GetComponent<RectTransform>();
+            if (cardRect == null) continue;
+
+            cardRect.anchorMin = new Vector2(0.5f, 0.5f);
+            cardRect.anchorMax = new Vector2(0.5f, 0.5f);
+            cardRect.pivot = new Vector2(0.5f, 0.5f);
+            cardRect.sizeDelta = new Vector2(cardWidth, cardHeight);
+            cardRect.anchoredPosition = new Vector2(startX + i * (cardWidth + safeSpacing), 0f);
+        }
+    }
+
+    private RectTransform GetCardsParent(int visibleCards)
+    {
+        for (int i = 0; i < visibleCards; i++)
+        {
+            if (cards[i] == null) continue;
+
+            Transform parent = cards[i].transform.parent;
+            if (parent != null && parent is RectTransform parentRect)
+                return parentRect;
+        }
+
+        return selectionPanelRect;
     }
 }

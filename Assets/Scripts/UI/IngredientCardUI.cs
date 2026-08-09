@@ -33,6 +33,8 @@ public class IngredientCardUI : MonoBehaviour
 
         if (data == null) return;
 
+        ApplyTextDefaults();
+
         if (iconImage != null)
             iconImage.sprite = data.icon;
 
@@ -84,5 +86,24 @@ public class IngredientCardUI : MonoBehaviour
         {
             selectionManager.OnCardSelected(data);
         }
+    }
+
+    private void ApplyTextDefaults()
+    {
+        ConfigureText(nameText, 14f, 22f, TextOverflowModes.Ellipsis);
+        ConfigureText(flavorText, 9f, 13f, TextOverflowModes.Ellipsis);
+        ConfigureText(statsText, 10f, 16f, TextOverflowModes.Ellipsis);
+        ConfigureText(abilityText, 9f, 13f, TextOverflowModes.Ellipsis);
+    }
+
+    private void ConfigureText(TextMeshProUGUI text, float minSize, float maxSize, TextOverflowModes overflowMode)
+    {
+        if (text == null) return;
+
+        text.enableWordWrapping = true;
+        text.enableAutoSizing = true;
+        text.fontSizeMin = minSize;
+        text.fontSizeMax = maxSize;
+        text.overflowMode = overflowMode;
     }
 }

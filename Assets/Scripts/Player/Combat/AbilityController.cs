@@ -17,6 +17,7 @@ public class AbilityController : MonoBehaviour
     private readonly List<IOnAttackActivatedEffect> attackActivatedEffects = new List<IOnAttackActivatedEffect>();
     private readonly List<IDamageTakenModifier> damageTakenModifiers = new List<IDamageTakenModifier>();
     private readonly List<IOnDamageTakenEffect> damageTakenEffects = new List<IOnDamageTakenEffect>();
+    private readonly List<IIngredientAbility> formAbilities = new List<IIngredientAbility>();
     private readonly Dictionary<IActiveAbility, float> activeCooldowns = new Dictionary<IActiveAbility, float>();
 
     private void Awake()
@@ -62,6 +63,8 @@ public class AbilityController : MonoBehaviour
         if (ability == null) return;
         if (!all.Remove(ability)) return;
 
+        formAbilities.Remove(ability);
+
         if (ability is IAttackModifier am) attackModifiers.Remove(am);
         if (ability is IOnHitEffect ohe) onHitEffects.Remove(ohe);
         if (ability is IActiveAbility aa)
@@ -76,6 +79,29 @@ public class AbilityController : MonoBehaviour
         if (ability is IOnDamageTakenEffect odte) damageTakenEffects.Remove(odte);
 
         ability.OnRemoved(combat);
+    }
+
+    public void ReplaceFormAbilities(IReadOnlyList<AbilityDataSO> abilities)
+    {
+        ClearFormAbilities();
+
+        if (abilities == null) return;
+
+        for (int i = 0; i < abilities.Count; i++)
+        {
+            AbilityDataSO ability = abilities[i];
+            if (ability == null) continue;
+            if (all.Contains(ability)) continue;
+
+            AddAbility(ability);
+            formAbilities.Add(ability);
+        }
+    }
+
+    public void ClearFormAbilities()
+    {
+        while (formAbilities.Count > 0)
+            RemoveAbility(formAbilities[formAbilities.Count - 1]);
     }
 
     public float ApplyDamageModifiers(float baseDamage, AttackContext context)
