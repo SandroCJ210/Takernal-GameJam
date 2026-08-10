@@ -18,9 +18,6 @@ public class HealthUIController : StaticInstance<HealthUIController>
     [Header("Character Head Animation")]
     [SerializeField] private string healthStateParameter = "HealthState";
     [SerializeField] private string headTriggerparameter = "HeadTrigger";
-    [SerializeField] private string healthyStateName = "HappyFace";
-    [SerializeField] private string injuredStateName = "InjuredFace";
-    [SerializeField] private string criticalStateName = "CriticalFace";
     [SerializeField, Range(0f, 1f)] private float injuredHealthThreshold = 0.66f;
     [SerializeField, Range(0f, 1f)] private float criticalHealthThreshold = 0.33f;
     [SerializeField, Min(0f)] private float minimumAnimationInterval = 3f;

@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: 1196213933379888888}
   - component: {fileID: 8061746959367542621}
   - component: {fileID: 6342969921762058391}
+  - component: {fileID: 3257781906602804071}
+  - component: {fileID: 1591661423928384853}
+  - component: {fileID: 5821036115220406618}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -81,7 +84,7 @@ MonoBehaviour:
   _acceleration: 50
   _maxSpeed: 7.5
   _drag: 0.4
-  _animator: {fileID: 1629939702553028844}
+  _animator: {fileID: 0}
   _combat: {fileID: 0}
   _stats: {fileID: 0}
 --- !u!114 &665715646718125746
@@ -103,6 +106,7 @@ MonoBehaviour:
   firstAttack: {fileID: 11400000, guid: c2f30e7cf1002a443bd33b03d6f6662a, type: 2}
   abilities: {fileID: 6342969921762058391}
   stats: {fileID: 8061746959367542621}
+  formController: {fileID: 0}
 --- !u!114 &1196213933379888888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +147,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityController
   combat: {fileID: 665715646718125746}
+--- !u!114 &3257781906602804071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7381343260871311632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab733d5b70ff4863baafab7487f04f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReturnToMenuOnPlayerDeath
+  menuSceneName: MainMenu
+  delayBeforeReturn: 1
+--- !u!114 &1591661423928384853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7381343260871311632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4f8ae8ba984ff6bd18df40ee128fbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerFormController
+  inventory: {fileID: 5821036115220406618}
+  recipeBook: {fileID: 11400000, guid: 18c02c420d860474cba6dec503b320ec, type: 2}
+  combat: {fileID: 665715646718125746}
+  abilities: {fileID: 6342969921762058391}
+  movement: {fileID: 721631983952338625}
+  formVisualParent: {fileID: 4959339444967219956}
+  baseForm: {fileID: 11400000, guid: a791dc957408728468ed96c78c0dc497, type: 2}
+--- !u!114 &5821036115220406618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7381343260871311632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e597f3da97864847a0ac6973bdb4fd5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerIngredientInventory
+  maxIngredients: 3
+  listenToIngredientSelectionEvents: 1
+  abilityController: {fileID: 0}
+  ingredients:
+  - {fileID: 11400000, guid: 5609388c6b904de44adef43b23aa0046, type: 2}
+  - {fileID: 11400000, guid: 6ce7d48989a686d41b21522ff330a425, type: 2}
 --- !u!1 &7441723289912266128
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +328,10 @@ PrefabInstance:
     - target: {fileID: 3399963976910928525, guid: 1422530509970aa4d89576a6f03f3d0a, type: 3}
       propertyPath: m_Name
       value: Sprite
+      objectReference: {fileID: 0}
+    - target: {fileID: 3399963976910928525, guid: 1422530509970aa4d89576a6f03f3d0a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5172365798945043726, guid: 1422530509970aa4d89576a6f03f3d0a, type: 3}
       propertyPath: m_LocalPosition.x

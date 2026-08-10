@@ -29,6 +29,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
     [SerializeField] private AbilityController abilities;
     [SerializeField] private PlayerStats stats;
+    [SerializeField] private PlayerFormController formController;
 
     public bool IsAlive => health != null && health.IsAlive;
     public bool IsAttacking => isAttacking;
@@ -46,6 +47,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (abilities == null) abilities = GetComponent<AbilityController>();
         if (stats == null) stats = GetComponent<PlayerStats>();
+        if (formController == null) formController = GetComponent<PlayerFormController>();
 
         if (hitbox != null)
             hitbox.OnHitLanded += HandleHitLanded;
@@ -57,7 +59,6 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
         InputHandler.Instance.OnAttackRecieved += HandleAttackInput;
         InputHandler.Instance.OnAbility1Recieved += HandleAbility1Input;
-        InputHandler.Instance.OnUltimateRecieved += HandleUltimateInput;
     }
 
     private void OnDestroy()
@@ -66,7 +67,6 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         {
             InputHandler.Instance.OnAttackRecieved -= HandleAttackInput;
             InputHandler.Instance.OnAbility1Recieved -= HandleAbility1Input;
-            InputHandler.Instance.OnUltimateRecieved -= HandleUltimateInput;
         }
 
         if (hitbox != null)
@@ -81,14 +81,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
     private void HandleAbility1Input()
     {
-        if (abilities != null)
-            abilities.ActivateAbility(0);
-    }
-
-    private void HandleUltimateInput()
-    {
-        if (abilities != null)
-            abilities.ActivateFormAbility(0);
+        UseActiveAbility(0);
     }
 
     private void HandleAttackInput()
@@ -208,8 +201,15 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
     public void UseActiveAbility(int slotIndex)
     {
-        if (abilities != null)
-            abilities.ActivateAbility(slotIndex);
+        if (abilities == null) return;
+
+        if (formController != null && formController.IsDishFormActive)
+        {
+            abilities.ActivateFormAbility(slotIndex);
+            return;
+        }
+
+        abilities.ActivateAbility(slotIndex);
     }
 
     public void SetFirstAttack(AttackDataSO attack)

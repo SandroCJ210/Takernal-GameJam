@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -67,6 +68,15 @@ public class PlayerFormController : MonoBehaviour
     {
         if (baseForm != null)
             SetBaseForm(baseForm, true);
+
+        if (InputHandler.Instance != null)
+            InputHandler.Instance.OnUltimateRecieved += HandleUltimateInput;
+    }
+
+    private void OnDestroy()
+    {
+        if (InputHandler.Instance != null)
+            InputHandler.Instance.OnUltimateRecieved -= HandleUltimateInput;
     }
 
     private void Update()
@@ -111,6 +121,22 @@ public class PlayerFormController : MonoBehaviour
         if (recipeBook == null || dish == null) return false;
 
         return CanTransformToDish(recipeBook.FindDishForm(dish));
+    }
+
+    public bool IsCurrentDish(DishData dish)
+    {
+        return IsSameDish(CurrentDish, dish);
+    }
+
+    public bool TryTransformToFirstCraftableDish()
+    {
+        if (recipeBook == null || inventory == null) return false;
+        if (CurrentState == PlayerFormState.Dish) return false;
+
+        List<DishFormDataSO> craftableDishes = recipeBook.GetCraftableDishes(inventory);
+        if (craftableDishes.Count == 0) return false;
+
+        return TryTransformToDish(craftableDishes[0]);
     }
 
     public bool TryTransformToDish(DishFormDataSO dishForm)
@@ -169,6 +195,11 @@ public class PlayerFormController : MonoBehaviour
         OnDishFormEnded?.Invoke(endedDishForm, reason);
     }
 
+    private void HandleUltimateInput()
+    {
+        TryTransformToFirstCraftableDish();
+    }
+
     private void ApplyForm(PlayerFormDataSO form)
     {
         if (form == null) return;
@@ -210,5 +241,14 @@ public class PlayerFormController : MonoBehaviour
 
         if (movement != null)
             movement.SetAnimator(formAnimator);
+    }
+
+    private static bool IsSameDish(DishData a, DishData b)
+    {
+        if (a == null || b == null) return false;
+        if (a == b) return true;
+        if (string.IsNullOrEmpty(a.id) || string.IsNullOrEmpty(b.id)) return false;
+
+        return a.id == b.id;
     }
 }

@@ -17,5 +17,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5609388c6b904de44adef43b23aa0046, type: 2}
   - {fileID: 11400000, guid: a12e345678901234567890abcdef0123, type: 2}
   - {fileID: 11400000, guid: b23f45678901234567890abcdef01234, type: 2}
-  - {fileID: 11400000, guid: c34a5678901234567890abcdef012345, type: 2}
-  - {fileID: 11400000, guid: d45b678901234567890abcdef0123456, type: 2}
+  guaranteedIngredients:
+  - {fileID: 11400000, guid: 6ce7d48989a686d41b21522ff330a425, type: 2}
+  - {fileID: 11400000, guid: 5609388c6b904de44adef43b23aa0046, type: 2}

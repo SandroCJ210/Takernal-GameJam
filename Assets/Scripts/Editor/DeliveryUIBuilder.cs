@@ -372,10 +372,10 @@ public class DeliveryUIBuilder
         serPanel.FindProperty("deliverButton").objectReferenceValue = btnDeliver;
         serPanel.FindProperty("closeButton").objectReferenceValue = btnClose;
 
-        DummyPlayer dummyPlayer = Object.FindFirstObjectByType<DummyPlayer>();
-        if (dummyPlayer != null)
+        PlayerFormController playerForm = Object.FindFirstObjectByType<PlayerFormController>();
+        if (playerForm != null)
         {
-            serPanel.FindProperty("player").objectReferenceValue = dummyPlayer;
+            serPanel.FindProperty("player").objectReferenceValue = playerForm;
         }
 
         serPanel.ApplyModifiedProperties();
@@ -408,24 +408,6 @@ public class DeliveryUIBuilder
         {
             GameObject icObj = new GameObject("[DeliveryInputController]", typeof(DeliveryInputController));
             Undo.RegisterCreatedObjectUndo(icObj, "Create DeliveryInputController");
-        }
-
-        // Cargar platillos en DummyPlayer si está vacío
-        if (dummyPlayer != null && (dummyPlayer.availableDishes == null || dummyPlayer.availableDishes.Count == 0))
-        {
-            if (dummyPlayer.availableDishes == null) dummyPlayer.availableDishes = new System.Collections.Generic.List<DishData>();
-
-            string[] dishGuids = AssetDatabase.FindAssets("t:DishData");
-            foreach (string g in dishGuids)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(g);
-                DishData d = AssetDatabase.LoadAssetAtPath<DishData>(path);
-                if (d != null && !dummyPlayer.availableDishes.Contains(d))
-                {
-                    dummyPlayer.availableDishes.Add(d);
-                }
-            }
-            EditorUtility.SetDirty(dummyPlayer);
         }
 
         AssetDatabase.SaveAssets();

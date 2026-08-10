@@ -28,7 +28,7 @@ public class DeliveryPanelUI : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     [Header("Referencias")]
-    [SerializeField] private DummyPlayer player;
+    [SerializeField] private PlayerFormController player;
 
     private Canvas parentCanvas;
     private List<DeliveryDishItemUI> spawnedDishItems = new List<DeliveryDishItemUI>();
@@ -70,7 +70,7 @@ public class DeliveryPanelUI : MonoBehaviour
     {
         if (player == null)
         {
-            player = FindFirstObjectByType<DummyPlayer>();
+            player = FindFirstObjectByType<PlayerFormController>();
         }
     }
 
@@ -147,21 +147,19 @@ public class DeliveryPanelUI : MonoBehaviour
 
     private List<DishData> GetPlayerDishes()
     {
-        // Obtener la referencia al jugador (DummyPlayer o tag "Player")
-        if (player == null) player = FindFirstObjectByType<DummyPlayer>();
+        // La entrega final usa la forma activa del jugador real, no el DummyPlayer de pruebas.
+        if (player == null) player = FindFirstObjectByType<PlayerFormController>();
         if (player == null)
         {
             GameObject playerObj = GameObject.FindWithTag("Player");
-            if (playerObj != null) player = playerObj.GetComponent<DummyPlayer>();
+            if (playerObj != null) player = playerObj.GetComponent<PlayerFormController>();
         }
 
-        // Retornar estrictamente los platillos que el jugador posee actualmente en su inventario
-        if (player != null && player.availableDishes != null)
-        {
-            return player.availableDishes;
-        }
+        List<DishData> activeDish = new List<DishData>();
+        if (player != null && player.IsDishFormActive && player.CurrentDish != null)
+            activeDish.Add(player.CurrentDish);
 
-        return new List<DishData>();
+        return activeDish;
     }
 
     private void PopulateDishes()
@@ -289,7 +287,7 @@ public class DeliveryPanelUI : MonoBehaviour
     public void DeliverDishToCustomer(DishData dish, CustomerInstance customer)
     {
         if (dish == null || customer == null) return;
-        if (player == null) player = FindFirstObjectByType<DummyPlayer>();
+        if (player == null) player = FindFirstObjectByType<PlayerFormController>();
 
         if (DeliveryManager.Instance == null)
         {
@@ -298,6 +296,16 @@ public class DeliveryPanelUI : MonoBehaviour
         }
 
         DeliveryResult result = DeliveryManager.Instance.TryDeliver(dish, customer, player);
+
+        if (!result.IsValid)
+        {
+            if (feedbackText != null)
+                feedbackText.text = "<color=#FF6961>No hay un platillo activo para entregar.</color>";
+
+            ClearSelection();
+            RefreshLists();
+            return;
+        }
 
         // Feedback al usuario
         if (feedbackText != null)

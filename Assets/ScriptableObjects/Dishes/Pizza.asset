@@ -17,10 +17,11 @@ MonoBehaviour:
   icon: {fileID: 0}
   formPrefab: {fileID: 5648878703276260923, guid: bbb7064b04973394d93dda5e4f0b1226, type: 3}
   firstAttack: {fileID: 0}
-  formAbilities: []
+  formAbilities:
+  - {fileID: 11400000, guid: 45f177fbf4ee18a4f9f557f0cd6e06a3, type: 2}
   overrideMovement: 0
   acceleration: 50
   maxSpeed: 7.5
   drag: 0.4
   dish: {fileID: 11400000, guid: 496aab28b2f0f19418e8158e62456850, type: 2}
-  duration: 20
+  duration: 30

@@ -18,7 +18,7 @@ MonoBehaviour:
   cooldown: 6
   spawnDistance: 0.65
   explosionRadius: 1.25
-  stunDuration: 5
+  stunDuration: 2.5
   explosionDamage: 5
   targetLayers:
     serializedVersion: 2

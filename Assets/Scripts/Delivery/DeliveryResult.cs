@@ -8,6 +8,7 @@ public struct DeliveryResult
     public DishData Dish;
     public CustomerInstance Customer;
     public int Score;
+    public bool IsValid => Dish != null && Customer != null;
     public bool IsSuccess => Score > 0;
     public bool IsNeutral => Score == 0;
     public bool IsPenalty => Score < 0;

@@ -25,11 +25,23 @@ public class DeliveryManager : MonoBehaviour
     /// <summary>
     /// Procesa la entrega de un platillo a un cliente por parte del jugador.
     /// </summary>
-    public DeliveryResult TryDeliver(DishData dish, CustomerInstance customer, DummyPlayer player)
+    public DeliveryResult TryDeliver(DishData dish, CustomerInstance customer, PlayerFormController playerForm)
     {
-        if (dish == null || customer == null || player == null)
+        if (dish == null || customer == null || playerForm == null)
         {
             if (showDebugLogs) Debug.LogWarning("[DeliveryManager] No se pudo procesar la entrega: Referencias nulas.");
+            return default;
+        }
+
+        if (customer.Data == null || CustomerManager.Instance == null)
+        {
+            if (showDebugLogs) Debug.LogWarning("[DeliveryManager] No se pudo procesar la entrega: falta data del cliente o CustomerManager.");
+            return default;
+        }
+
+        if (!playerForm.IsDishFormActive || !playerForm.IsCurrentDish(dish))
+        {
+            if (showDebugLogs) Debug.LogWarning("[DeliveryManager] No se pudo procesar la entrega: el jugador no tiene activo ese platillo.");
             return default;
         }
 
@@ -37,7 +49,13 @@ public class DeliveryManager : MonoBehaviour
         int score = CalculateSatisfactionScore(dish, customer.Data);
 
         // 2. Retirar el platillo del inventario del jugador
-        player.RemoveDish(dish);
+        if (!playerForm.ConsumeCurrentDishForDelivery(out DishData deliveredDish))
+        {
+            if (showDebugLogs) Debug.LogWarning("[DeliveryManager] No se pudo consumir el platillo activo del jugador.");
+            return default;
+        }
+
+        dish = deliveredDish;
 
         // 3. Notificar evento de entrega realizada
         GameEvents.OnDishDelivered?.Invoke(dish);
