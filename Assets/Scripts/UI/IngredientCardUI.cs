@@ -100,7 +100,7 @@ public class IngredientCardUI : MonoBehaviour
     {
         if (text == null) return;
 
-        text.enableWordWrapping = true;
+        text.textWrappingMode = TextWrappingModes.Normal;
         text.enableAutoSizing = true;
         text.fontSizeMin = minSize;
         text.fontSizeMax = maxSize;

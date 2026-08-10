@@ -366,6 +366,11 @@ public class ChaserEnemy : MonoBehaviour, IDamageable
 
     private void UpdateAnimator(float currentSpeed)
     {
+        if (spriteRenderer != null && facingX != 0)
+        {
+            spriteRenderer.flipX = (facingX > 0);
+        }
+
         if (animator == null) return;
 
         if (hasXDirectionParameter)
