@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2680290aa353c004b9cb0dd98345f61a, type: 3}
+  m_Name: CheeseMozzarellaBallAbility
+  m_EditorClassIdentifier: Assembly-CSharp::CheeseMozzarellaBallAbilitySO
+  abilityName: 
+  projectilePrefab: {fileID: 4100067785163839465, guid: f80f16468fab61b4cb01575d8c1a0eaf, type: 3}
+  explosionPrefab: {fileID: 5284274805452912498, guid: 05cd67c9ba354c8468e57b2659c8c10b, type: 3}
+  cooldown: 6
+  spawnDistance: 0.65
+  explosionRadius: 1.25
+  stunDuration: 5
+  explosionDamage: 5
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295

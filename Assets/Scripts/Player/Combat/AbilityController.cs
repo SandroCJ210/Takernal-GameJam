@@ -158,10 +158,26 @@ public class AbilityController : MonoBehaviour
         if (slotIndex < 0 || slotIndex >= activeAbilities.Count) return;
 
         IActiveAbility ability = activeAbilities[slotIndex];
-        if (GetCooldownRemaining(ability) > 0f) return;
+        TryActivateAbility(ability);
+    }
 
-        ability.Activate(combat);
-        activeCooldowns[ability] = Mathf.Max(0f, ability.Cooldown);
+    public void ActivateFormAbility(int slotIndex)
+    {
+        if (slotIndex < 0) return;
+
+        int activeFormAbilityIndex = 0;
+        for (int i = 0; i < formAbilities.Count; i++)
+        {
+            if (!(formAbilities[i] is IActiveAbility ability)) continue;
+
+            if (activeFormAbilityIndex == slotIndex)
+            {
+                TryActivateAbility(ability);
+                return;
+            }
+
+            activeFormAbilityIndex++;
+        }
     }
 
     public float GetCooldownRemaining(int slotIndex)
@@ -187,6 +203,15 @@ public class AbilityController : MonoBehaviour
         return activeCooldowns.TryGetValue(ability, out float remaining)
             ? Mathf.Max(0f, remaining)
             : 0f;
+    }
+
+    private void TryActivateAbility(IActiveAbility ability)
+    {
+        if (ability == null) return;
+        if (GetCooldownRemaining(ability) > 0f) return;
+
+        if (ability.Activate(combat))
+            activeCooldowns[ability] = Mathf.Max(0f, ability.Cooldown);
     }
 
     private void TickCooldowns(float deltaTime)

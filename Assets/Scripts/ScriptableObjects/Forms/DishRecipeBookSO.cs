@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewDishRecipeBook", menuName = "Takernal/Player/Dish Recipe Book")]
+[CreateAssetMenu(fileName = "NewDishRecipeBook", menuName = "Player/Dish Recipe Book")]
 public class DishRecipeBookSO : ScriptableObject
 {
     [SerializeField] private List<DishFormDataSO> dishForms = new List<DishFormDataSO>();

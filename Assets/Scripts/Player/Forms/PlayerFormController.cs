@@ -207,5 +207,8 @@ public class PlayerFormController : MonoBehaviour
         Animator formAnimator = currentFormInstance.GetComponentInChildren<Animator>();
         Hitbox formHitbox = currentFormInstance.GetComponentInChildren<Hitbox>();
         combat.SetCombatReferences(formAnimator, formHitbox);
+
+        if (movement != null)
+            movement.SetAnimator(formAnimator);
     }
 }

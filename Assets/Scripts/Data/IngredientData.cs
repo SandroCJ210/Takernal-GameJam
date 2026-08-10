@@ -16,5 +16,7 @@ public class IngredientData : ScriptableObject
 
     [Header("Bonus de Stats al Adquirirse")]
     public StatBonus statBonus;
-}
 
+    [Header("Habilidades al Adquirirse")]
+    public AbilityDataSO[] grantedAbilities;
+}

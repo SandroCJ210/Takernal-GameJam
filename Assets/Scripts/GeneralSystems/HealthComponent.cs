@@ -41,8 +41,8 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void IncreaseMaxHealth(float amount)
     {
-        maxHealth += amount;
-        currentHealth += amount; 
+        maxHealth = Mathf.Max(1f, maxHealth + amount);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }

@@ -10,9 +10,11 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float _drag;
     [SerializeField] private Animator _animator;
     [SerializeField] private PlayerCombat _combat;
+    [SerializeField] private PlayerStats _stats;
 
     private Rigidbody2D _rb;
     private Vector2 _bufferedMovement;
+    private Vector2 _rawMovementInput;
     private Vector2 _previousRawInput;
     private Vector2 _previousFacing;
     private Vector2 _pendingFacingAfterAttack;
@@ -22,14 +24,22 @@ public class PlayerMovement : MonoBehaviour {
         _rb = GetComponent<Rigidbody2D>();
         if (_animator == null) _animator = GetComponentInChildren<Animator>();
         if (_combat == null) _combat = GetComponent<PlayerCombat>();
+        if (_stats == null) _stats = GetComponent<PlayerStats>();
     }
 
     private void Start() {
-        InputHandler.Instance.OnMoveRecieved += OnMove;
+        if (InputHandler.Instance != null)
+            InputHandler.Instance.OnMoveRecieved += OnMove;
+    }
+
+    private void OnDestroy() {
+        if (InputHandler.Instance != null)
+            InputHandler.Instance.OnMoveRecieved -= OnMove;
     }
 
     private void OnMove(Vector2 direction) {
-        _bufferedMovement = direction * _acceleration;
+        _rawMovementInput = direction;
+        _bufferedMovement = direction * GetEffectiveAcceleration();
 
         bool xActive = !Mathf.Approximately(direction.x, 0f);
         bool yActive = !Mathf.Approximately(direction.y, 0f);
@@ -51,8 +61,10 @@ public class PlayerMovement : MonoBehaviour {
             return;
         }
 
-        if (_combat != null && _combat.IsAttacking) {
-            _combat.BufferAttackDirection(facing);
+        if (_combat != null && _combat.IsMovementLocked) {
+            if (_combat.IsAttacking)
+                _combat.BufferAttackDirection(facing);
+
             _pendingFacingAfterAttack = facing;
             _hasPendingFacingAfterAttack = true;
             return;
@@ -67,24 +79,26 @@ public class PlayerMovement : MonoBehaviour {
 
     private void LateUpdate()
     {
-        if (_hasPendingFacingAfterAttack && (_combat == null || !_combat.IsAttacking)) {
+        if (_hasPendingFacingAfterAttack && (_combat == null || !_combat.IsMovementLocked)) {
             ApplyFacing(_pendingFacingAfterAttack);
             _hasPendingFacingAfterAttack = false;
         }
 
-        _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
+        if (_animator != null)
+            _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
     }
 
     private void Move()
     {
-        if (_combat != null && _combat.IsAttacking) {
+        if (_combat != null && _combat.IsMovementLocked) {
             if (!_combat.IsPerformingCombatMovement)
                 _rb.linearVelocity = Vector2.zero;
 
             return;
         }
 
-        if (Mathf.Approximately(_bufferedMovement.magnitude, 0f)) {
+        Vector2 effectiveMovement = _rawMovementInput * GetEffectiveAcceleration();
+        if (Mathf.Approximately(effectiveMovement.magnitude, 0f)) {
 
             _rb.linearVelocity *= 1 - _drag;
 
@@ -94,10 +108,12 @@ public class PlayerMovement : MonoBehaviour {
             return;
         }
 
-        if (_rb.linearVelocity.magnitude >= _maxSpeed) {
-            _rb.linearVelocity = _rb.linearVelocity.normalized * _maxSpeed;
+        float effectiveMaxSpeed = GetEffectiveMaxSpeed();
+        if (_rb.linearVelocity.magnitude >= effectiveMaxSpeed) {
+            _rb.linearVelocity = _rb.linearVelocity.normalized * effectiveMaxSpeed;
         }
 
+        _bufferedMovement = effectiveMovement;
         _rb.AddForce(_bufferedMovement);
     }
 
@@ -108,6 +124,12 @@ public class PlayerMovement : MonoBehaviour {
         _drag = Mathf.Clamp01(drag);
     }
 
+    public void SetAnimator(Animator newAnimator)
+    {
+        if (newAnimator != null)
+            _animator = newAnimator;
+    }
+
     private void ApplyFacing(Vector2 facing)
     {
         if (_animator == null) return;
@@ -115,5 +137,18 @@ public class PlayerMovement : MonoBehaviour {
         _animator.SetFloat("xInput", facing.x);
         _animator.SetFloat("yInput", facing.y);
         _previousFacing = facing;
+    }
+
+    private float GetEffectiveAcceleration()
+    {
+        float multiplier = _stats != null ? _stats.SpeedMultiplier : 1f;
+        return Mathf.Max(0f, _acceleration * multiplier);
+    }
+
+    private float GetEffectiveMaxSpeed()
+    {
+        float flatBonus = _stats != null ? _stats.FlatSpeedBonus : 0f;
+        float multiplier = _stats != null ? _stats.SpeedMultiplier : 1f;
+        return Mathf.Max(0f, (_maxSpeed + flatBonus) * multiplier);
     }
 }

@@ -175,19 +175,22 @@ MonoBehaviour:
   damage: 10
   attackRange: 1.25
   attackRadius: 1.7
-  attackWindup: 0.2
+  attackWindup: 1.25
   attackRecovery: 0.3
   attackCooldown: 2
   attackLayers:
     serializedVersion: 2
     m_Bits: 1
+  hitStunDuration: 0.25
   animator: {fileID: 0}
   xDirectionParameter: xInput
   yDirectionParameter: yInput
   speedParameter: speed
   attackingParameter: isAttacking
+  stunnedParameter: isStunned
   facingDirection: {x: 0, y: -1}
   movementDirection: {x: 0, y: 0}
   facingX: 0
   facingY: -1
   isAttacking: 0
+  isStunned: 0

@@ -5,7 +5,11 @@ using UnityEngine;
 public class PlayerIngredientInventory : MonoBehaviour
 {
     [SerializeField] private int maxIngredients;
+    [SerializeField] private bool listenToIngredientSelectionEvents = true;
+    [SerializeField] private AbilityController abilityController;
     [SerializeField] private List<IngredientData> ingredients = new List<IngredientData>();
+
+    private readonly Dictionary<AbilityDataSO, int> grantedAbilityCounts = new Dictionary<AbilityDataSO, int>();
 
     public IReadOnlyList<IngredientData> Ingredients => ingredients;
     public int IngredientsCount => ingredients.Count;
@@ -14,12 +18,35 @@ public class PlayerIngredientInventory : MonoBehaviour
     public event Action<IngredientData> OnIngredientRemoved;
     public event Action OnIngredientsChanged;
 
+    private void Awake()
+    {
+        if (abilityController == null) abilityController = GetComponent<AbilityController>();
+    }
+
+    private void Start()
+    {
+        RebuildGrantedAbilities();
+    }
+
+    private void OnEnable()
+    {
+        if (listenToIngredientSelectionEvents)
+            GameEvents.OnIngredientSelected += AddIngredientFromSelection;
+    }
+
+    private void OnDisable()
+    {
+        if (listenToIngredientSelectionEvents)
+            GameEvents.OnIngredientSelected -= AddIngredientFromSelection;
+    }
+
     public bool AddIngredient(IngredientData ingredient)
     {
         if (ingredient == null) return false;
         if (maxIngredients > 0 && ingredients.Count >= maxIngredients) return false;
 
         ingredients.Add(ingredient);
+        AddGrantedAbilities(ingredient);
         OnIngredientAdded?.Invoke(ingredient);
         OnIngredientsChanged?.Invoke();
         return true;
@@ -32,6 +59,7 @@ public class PlayerIngredientInventory : MonoBehaviour
 
         IngredientData removed = ingredients[index];
         ingredients.RemoveAt(index);
+        RemoveGrantedAbilities(removed);
         OnIngredientRemoved?.Invoke(removed);
         OnIngredientsChanged?.Invoke();
         return true;
@@ -66,6 +94,7 @@ public class PlayerIngredientInventory : MonoBehaviour
 
             IngredientData removed = ingredients[index];
             ingredients.RemoveAt(index);
+            RemoveGrantedAbilities(removed);
             OnIngredientRemoved?.Invoke(removed);
         }
 
@@ -77,6 +106,7 @@ public class PlayerIngredientInventory : MonoBehaviour
     {
         if (ingredients.Count == 0) return;
 
+        ClearGrantedAbilities();
         ingredients.Clear();
         OnIngredientsChanged?.Invoke();
     }
@@ -114,5 +144,73 @@ public class PlayerIngredientInventory : MonoBehaviour
         if (string.IsNullOrEmpty(a.id) || string.IsNullOrEmpty(b.id)) return false;
 
         return a.id == b.id;
+    }
+
+    private void AddIngredientFromSelection(IngredientData ingredient)
+    {
+        AddIngredient(ingredient);
+    }
+
+    private void AddGrantedAbilities(IngredientData ingredient)
+    {
+        if (ingredient == null || ingredient.grantedAbilities == null) return;
+
+        for (int i = 0; i < ingredient.grantedAbilities.Length; i++)
+        {
+            AbilityDataSO ability = ingredient.grantedAbilities[i];
+            if (ability == null) continue;
+
+            if (grantedAbilityCounts.TryGetValue(ability, out int count))
+            {
+                grantedAbilityCounts[ability] = count + 1;
+                continue;
+            }
+
+            grantedAbilityCounts[ability] = 1;
+            if (abilityController != null)
+                abilityController.AddAbility(ability);
+        }
+    }
+
+    private void RemoveGrantedAbilities(IngredientData ingredient)
+    {
+        if (ingredient == null || ingredient.grantedAbilities == null) return;
+
+        for (int i = 0; i < ingredient.grantedAbilities.Length; i++)
+        {
+            AbilityDataSO ability = ingredient.grantedAbilities[i];
+            if (ability == null) continue;
+            if (!grantedAbilityCounts.TryGetValue(ability, out int count)) continue;
+
+            count--;
+            if (count > 0)
+            {
+                grantedAbilityCounts[ability] = count;
+                continue;
+            }
+
+            grantedAbilityCounts.Remove(ability);
+            if (abilityController != null)
+                abilityController.RemoveAbility(ability);
+        }
+    }
+
+    private void ClearGrantedAbilities()
+    {
+        if (abilityController != null)
+        {
+            foreach (AbilityDataSO ability in grantedAbilityCounts.Keys)
+                abilityController.RemoveAbility(ability);
+        }
+
+        grantedAbilityCounts.Clear();
+    }
+
+    private void RebuildGrantedAbilities()
+    {
+        ClearGrantedAbilities();
+
+        for (int i = 0; i < ingredients.Count; i++)
+            AddGrantedAbilities(ingredients[i]);
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewDishForm", menuName = "Takernal/Player/Dish Form Data")]
+[CreateAssetMenu(fileName = "NewDishForm", menuName = "Player/Dish Form Data")]
 public class DishFormDataSO : PlayerFormDataSO
 {
     [Header("Platillo")]

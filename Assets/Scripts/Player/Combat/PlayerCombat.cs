@@ -22,6 +22,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     private bool canQueueNextAttack;
     private bool isPerformingCombatMovement;
     private bool hasBufferedAttackDirection;
+    private int externalCombatMovementLocks;
     private Coroutine lungeRoutine;
     private Vector2 currentAttackDirection = Vector2.right;
     private Vector2 bufferedAttackDirection = Vector2.right;
@@ -31,7 +32,8 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
     public bool IsAlive => health != null && health.IsAlive;
     public bool IsAttacking => isAttacking;
-    public bool IsPerformingCombatMovement => isPerformingCombatMovement;
+    public bool IsMovementLocked => isAttacking || externalCombatMovementLocks > 0;
+    public bool IsPerformingCombatMovement => isPerformingCombatMovement || externalCombatMovementLocks > 0;
     public AttackDataSO CurrentAttack => currentAttack;
     public int CurrentComboStep => currentComboStep;
     public Vector2 FacingDirection => GetAttackDirection();
@@ -55,6 +57,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
         InputHandler.Instance.OnAttackRecieved += HandleAttackInput;
         InputHandler.Instance.OnAbility1Recieved += HandleAbility1Input;
+        InputHandler.Instance.OnUltimateRecieved += HandleUltimateInput;
     }
 
     private void OnDestroy()
@@ -63,6 +66,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
         {
             InputHandler.Instance.OnAttackRecieved -= HandleAttackInput;
             InputHandler.Instance.OnAbility1Recieved -= HandleAbility1Input;
+            InputHandler.Instance.OnUltimateRecieved -= HandleUltimateInput;
         }
 
         if (hitbox != null)
@@ -72,6 +76,7 @@ public class PlayerCombat : MonoBehaviour, IDamageable
     private void OnDisable()
     {
         StopLunge();
+        externalCombatMovementLocks = 0;
     }
 
     private void HandleAbility1Input()
@@ -80,8 +85,16 @@ public class PlayerCombat : MonoBehaviour, IDamageable
             abilities.ActivateAbility(0);
     }
 
+    private void HandleUltimateInput()
+    {
+        if (abilities != null)
+            abilities.ActivateFormAbility(0);
+    }
+
     private void HandleAttackInput()
     {
+        if (externalCombatMovementLocks > 0) return;
+
         if (!isAttacking)
         {
             StartAttack(firstAttack, 1);
@@ -157,6 +170,9 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
         AttackContext context = CreateAttackContext();
         float finalDamage = currentAttack.baseDamage;
+        if (stats != null)
+            finalDamage += stats.FlatDamageBonus;
+
         if (abilities != null)
         {
             abilities.TriggerAttackActivated(context);
@@ -227,6 +243,22 @@ public class PlayerCombat : MonoBehaviour, IDamageable
 
         if (hitbox != null)
             hitbox.Deactivate();
+    }
+
+    public void BeginExternalCombatMovement()
+    {
+        externalCombatMovementLocks++;
+
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+    }
+
+    public void EndExternalCombatMovement()
+    {
+        externalCombatMovementLocks = Mathf.Max(0, externalCombatMovementLocks - 1);
+
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
     }
     
 

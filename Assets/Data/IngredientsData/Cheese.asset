@@ -17,9 +17,14 @@ MonoBehaviour:
   icon: {fileID: -347414827906679412, guid: b2fc29439932d4a47b0b0dda8a3da06e, type: 3}
   visualSidekick: {fileID: 0}
   flavorText: Rich, creamy, and packed with calcium power.
-  abilityDescription: Passive: Sticky Coating (Slowing)
+  abilityDescription: Throw a cheese projectile to stun your enemies.
   rarity: 0
   statBonus:
     speedIncrease: 0
     damageIncrease: 1
     healthIncrease: 15
+    speedPercent: 0
+    damagePercent: 0
+    healthPercent: 0
+  grantedAbilities:
+  - {fileID: 11400000, guid: 4bff4e024082c8d45b218addb9182f53, type: 2}

@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class ChaserEnemy : MonoBehaviour, IDamageable
+public class ChaserEnemy : MonoBehaviour, IDamageable, IStunnable
 {
     private const float DefaultHealth = 30f;
 
@@ -61,6 +61,7 @@ public class ChaserEnemy : MonoBehaviour, IDamageable
     private SpriteRenderer spriteRenderer;
     private bool statsInitialized;
     private bool hasDied;
+    private float hitStunEndsAt;
     private Coroutine attackRoutine;
     private Coroutine hitStunRoutine;
     private int xDirectionHash;
@@ -241,6 +242,13 @@ public class ChaserEnemy : MonoBehaviour, IDamageable
         StartHitStun();
     }
 
+    public void ApplyStun(float duration)
+    {
+        if (!IsAlive || duration <= 0f) return;
+
+        StartHitStun(duration);
+    }
+
     private void Die()
     {
         if (hasDied) return;
@@ -271,26 +279,39 @@ public class ChaserEnemy : MonoBehaviour, IDamageable
 
     private void StartHitStun()
     {
-        if (hitStunDuration <= 0f) return;
+        StartHitStun(hitStunDuration);
+    }
+
+    private void StartHitStun(float duration)
+    {
+        if (duration <= 0f) return;
+
+        float newHitStunEndsAt = Time.time + duration;
 
         CancelAttack();
-        nextAttackTime = Mathf.Max(nextAttackTime, Time.time + hitStunDuration);
+        nextAttackTime = Mathf.Max(nextAttackTime, newHitStunEndsAt);
+
+        // Evita que un hit-stun corto de dano pise un stun largo aplicado por una habilidad.
+        if (hitStunRoutine != null && newHitStunEndsAt <= hitStunEndsAt)
+            return;
 
         if (hitStunRoutine != null)
             StopCoroutine(hitStunRoutine);
 
-        hitStunRoutine = StartCoroutine(HitStunRoutine());
+        hitStunEndsAt = newHitStunEndsAt;
+        hitStunRoutine = StartCoroutine(HitStunRoutine(duration));
     }
 
-    private IEnumerator HitStunRoutine()
+    private IEnumerator HitStunRoutine(float duration)
     {
         isStunned = true;
         movementDirection = Vector2.zero;
         UpdateAnimator(0f);
 
-        yield return new WaitForSeconds(hitStunDuration);
+        yield return new WaitForSeconds(duration);
 
         isStunned = false;
+        hitStunEndsAt = 0f;
         hitStunRoutine = null;
 
         if (rb != null)

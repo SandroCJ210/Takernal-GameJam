@@ -28,7 +28,7 @@ public interface IOnHitEffect : IIngredientAbility
 public interface IActiveAbility : IIngredientAbility
 {
     float Cooldown { get; }
-    void Activate(PlayerCombat owner);
+    bool Activate(PlayerCombat owner);
 }
 
 // Efecto pasivo que corre cada frame mientras el ingrediente esta en la build.

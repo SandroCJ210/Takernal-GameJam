@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewPlayerForm", menuName = "Takernal/Player/Form Data")]
+[CreateAssetMenu(fileName = "NewPlayerForm", menuName = "Player/Form Data")]
 public class PlayerFormDataSO : ScriptableObject
 {
     [Header("Identidad")]

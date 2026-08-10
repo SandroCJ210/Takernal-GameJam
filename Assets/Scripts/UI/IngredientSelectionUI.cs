@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class IngredientSelectionUI : StaticInstance<IngredientSelectionUI>
 {
@@ -22,6 +24,7 @@ public class IngredientSelectionUI : StaticInstance<IngredientSelectionUI>
     protected override void Awake()
     {
         base.Awake();
+        EnsureEventSystem();
         CacheLayoutReferences();
 
         if (selectionPanel != null)
@@ -32,6 +35,8 @@ public class IngredientSelectionUI : StaticInstance<IngredientSelectionUI>
 
     public void ShowSelection(List<IngredientData> ingredients)
     {
+        EnsureEventSystem();
+
         if (Instance == null)
         {
             // Asignar instancia si el GameObject estaba desactivado al inicio
@@ -199,5 +204,32 @@ public class IngredientSelectionUI : StaticInstance<IngredientSelectionUI>
         }
 
         return selectionPanelRect;
+    }
+
+    private static void EnsureEventSystem()
+    {
+#if UNITY_2023_1_OR_NEWER
+        EventSystem eventSystem = FindFirstObjectByType<EventSystem>();
+#else
+        EventSystem eventSystem = FindObjectOfType<EventSystem>();
+#endif
+        if (eventSystem == null)
+        {
+            GameObject eventSystemObject = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
+            eventSystemObject.transform.SetAsLastSibling();
+            return;
+        }
+
+        StandaloneInputModule legacyModule = eventSystem.GetComponent<StandaloneInputModule>();
+        if (legacyModule != null)
+        {
+            if (Application.isPlaying)
+                Destroy(legacyModule);
+            else
+                DestroyImmediate(legacyModule);
+        }
+
+        if (eventSystem.GetComponent<InputSystemUIInputModule>() == null)
+            eventSystem.gameObject.AddComponent<InputSystemUIInputModule>();
     }
 }
