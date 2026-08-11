@@ -6,6 +6,9 @@ public class MainMenuController : MonoBehaviour
     [Header("Scenes")]
     [SerializeField] private string gameSceneName = "Level";
 
+    [Header("Panels")]
+    [SerializeField] private GameObject howToPlayPanel;
+
     public void StartGame()
     {
         if (string.IsNullOrEmpty(gameSceneName))
@@ -16,6 +19,26 @@ public class MainMenuController : MonoBehaviour
 
         Time.timeScale = 1f;
         SceneManager.LoadScene(gameSceneName);
+    }
+
+    public void OpenHowToPlay()
+    {
+        if (howToPlayPanel != null)
+        {
+            howToPlayPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("[MainMenuController] howToPlayPanel no está asignado.");
+        }
+    }
+
+    public void CloseHowToPlay()
+    {
+        if (howToPlayPanel != null)
+        {
+            howToPlayPanel.SetActive(false);
+        }
     }
 
     public void ExitGame()
